@@ -1,0 +1,88 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * ═══════════════════════════════════════════════════════════════════════
+ * 🎮 OGAN CONSOLE - Point d'entrée CLI
+ * ═══════════════════════════════════════════════════════════════════════
+ */
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Ogan\Console\Application;
+use Ogan\Config\Config;
+
+// Charger la configuration
+$configPath = __DIR__ . '/../config/parameters.yaml';
+$envPath = __DIR__ . '/../.env';
+
+if (!file_exists($envPath)) {
+    echo "⚠️  Fichier .env non trouvé.\n";
+    $envExample = __DIR__ . '/../.env.example';
+    if (file_exists($envExample)) {
+        copy($envExample, $envPath);
+        echo "✅ Fichier .env créé depuis .env.example\n\n";
+    }
+}
+
+Config::init($configPath, $envPath);
+
+// Créer l'application console
+$app = new Application('Ogan Framework', '1.0.0');
+
+// ═══════════════════════════════════════════════════════════════════════
+// CHARGER LES COMMANDES DEPUIS DES FICHIERS SÉPARÉS
+// ═══════════════════════════════════════════════════════════════════════
+
+$commandsDir = __DIR__ . '/commands';
+
+// Tailwind
+require $commandsDir . '/tailwind.php';
+registerTailwindCommands($app);
+
+// Utilitaires
+require $commandsDir . '/utils.php';
+registerUtilsCommands($app);
+
+// Make
+require $commandsDir . '/make.php';
+registerMakeCommands($app);
+
+// Migrate
+require $commandsDir . '/migrate.php';
+registerMigrateCommands($app);
+
+// Auth
+require $commandsDir . '/auth.php';
+registerAuthCommands($app);
+
+// Pagination
+require $commandsDir . '/pagination.php';
+registerPaginationCommands($app);
+
+// Cache
+require $commandsDir . '/cache.php';
+registerCacheCommands($app);
+
+// API
+require $commandsDir . '/api.php';
+registerApiCommands($app);
+
+// Seeder
+require $commandsDir . '/seeder.php';
+registerSeederCommands($app);
+
+// Assets (OganAssetMapper)
+require $commandsDir . '/assets.php';
+registerAssetsCommands($app);
+
+// SEO (sitemap.xml, robots.txt)
+require $commandsDir . '/seo.php';
+registerSeoCommands($app);
+
+// Skeleton (synchronisation avec le skeleton de référence)
+require $commandsDir . '/skeleton.php';
+registerSkeletonCommands($app);
+
+// Exécuter l'application
+$app->run($argv);

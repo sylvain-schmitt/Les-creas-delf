@@ -1,0 +1,99 @@
+<footer class="relative border-t border-default mt-auto overflow-hidden">
+	<!-- Decorative gradient -->
+	<div class="absolute inset-0 bg-gradient-to-b from-transparent to-secondary opacity-50"></div>
+
+	<div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+		<div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+			<!-- Brand -->
+			<div class="md:col-span-2">
+				<div class="flex items-center gap-3 mb-4">
+					<div class="w-10 h-10 rounded-xl bg-primary-10 flex items-center justify-center">
+						<svg class="w-5 h-5 stroke-primary" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+							<path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/>
+						</svg>
+					</div>
+					<span class="font-handwriting text-2xl font-medium text-foreground">Les Créas d'Elf</span>
+				</div>
+				<p class="text-sm leading-relaxed text-muted mb-6 max-w-sm">
+					Des créations artisanales uniques, faites avec amour et passion. Chaque pièce raconte une histoire et porte une âme.
+				</p>
+
+				<!-- Social icons -->
+				<div class="flex items-center gap-3">
+					<a href="#" class="w-10 h-10 rounded-full bg-secondary border border-default flex items-center justify-center text-muted hover:text-primary hover:border-primary hover:bg-primary-10 transition-all group" aria-label="Instagram">
+						<svg class="w-5 h-5 transition-transform group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+							<rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+							<path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+							<line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+						</svg>
+					</a>
+					<a href="#" class="w-10 h-10 rounded-full bg-secondary border border-default flex items-center justify-center text-muted hover:text-primary hover:border-primary hover:bg-primary-10 transition-all group" aria-label="Facebook">
+						<svg class="w-5 h-5 transition-transform group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+						</svg>
+					</a>
+					<a href="#" class="w-10 h-10 rounded-full bg-secondary border border-default flex items-center justify-center text-muted hover:text-primary hover:border-primary hover:bg-primary-10 transition-all group" aria-label="Pinterest">
+						<svg class="w-5 h-5 transition-transform group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+							<line x1="12" x2="12" y1="17" y2="22"/>
+							<path d="M5 12c0-4 3.5-7 8-7s8 3 8 7-3.5 7-8 7"/>
+							<circle cx="12" cy="12" r="3"/>
+						</svg>
+					</a>
+					<a href="#" class="w-10 h-10 rounded-full bg-secondary border border-default flex items-center justify-center text-muted hover:text-primary hover:border-primary hover:bg-primary-10 transition-all group" aria-label="Email">
+						<svg class="w-5 h-5 transition-transform group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+							<rect width="20" height="16" x="2" y="4" rx="2"/>
+							<path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+						</svg>
+					</a>
+				</div>
+			</div>
+
+			<!-- Navigation -->
+			<div>
+				<h4 class="font-serif text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Navigation</h4>
+				<nav class="flex flex-col gap-3">
+					<a href="{{ path('index') }}" class="text-sm text-muted transition-colors hover:text-primary flex items-center gap-2 group">
+						<span class="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></span>
+						Accueil
+					</a>
+					<a href="{{ path('creations') }}" class="text-sm text-muted transition-colors hover:text-primary flex items-center gap-2 group">
+						<span class="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></span>
+						Mes créations
+					</a>
+					<a href="{{ path('about') }}" class="text-sm text-muted transition-colors hover:text-primary flex items-center gap-2 group">
+						<span class="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></span>
+						À propos
+					</a>
+					<a href="{{ path('contact') }}" class="text-sm text-muted transition-colors hover:text-primary flex items-center gap-2 group">
+						<span class="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></span>
+						Contact
+					</a>
+				</nav>
+			</div>
+
+			<!-- Admin & Legal -->
+			<div>
+				<h4 class="font-serif text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Légal</h4>
+				<nav class="flex flex-col gap-3">
+					<a href="{{ path('legal') }}" class="text-sm text-muted transition-colors hover:text-primary">Mentions légales</a>
+					<a href="{{ path('cgv') }}" class="text-sm text-muted transition-colors hover:text-primary">CGV</a>
+					<a href="{{ path('privacy') }}" class="text-sm text-muted transition-colors hover:text-primary">Politique de confidentialité</a>
+					<a href="{{ path('login') }}" class="text-sm text-muted transition-colors hover:text-primary">Espace admin</a>
+				</nav>
+			</div>
+		</div>
+
+		<!-- Copyright -->
+		<div class="mt-12 pt-8 border-t border-default">
+			<div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+				<p class="text-sm text-muted">
+					© {{ date('Y') }} Les Créas d'Elf — Fait avec ❤️ en France
+				</p>
+				<p class="text-xs text-muted opacity-60">
+					Créé avec passion par D'Elf
+				</p>
+			</div>
+		</div>
+	</div>
+</footer>

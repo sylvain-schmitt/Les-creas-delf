@@ -1,0 +1,100 @@
+{{ title = title ?? 'Les Créas D\'elf' }}
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>{{ title }}</title>
+		<link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+
+		<!-- Meta description -->
+		<meta name="description" content="{{ description ?? 'Les Créas d\'Elf - Créations artisanales & fait-main. Bougies, bijoux, poterie et décorations uniques faites avec amour.' }}">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="{{ url('/', true) }}">
+		<meta property="og:title" content="{{ title }}">
+		<meta property="og:description" content="{{ description ?? 'Créations artisanales & fait-main. Bougies, bijoux, poterie et décorations uniques faites avec amour.' }}">
+		<meta property="og:image" content="{{ url('/assets/images/og-image.png', true) }}">
+		<meta property="og:locale" content="fr_FR">
+		<meta property="og:site_name" content="Les Créas d'Elf">
+
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:title" content="{{ title }}">
+		<meta name="twitter:description" content="{{ description ?? 'Créations artisanales & fait-main. Bougies, bijoux, poterie et décorations uniques faites avec amour.' }}">
+		<meta name="twitter:image" content="{{ url('/assets/images/og-image.png', true) }}">
+
+		<!-- Structured Data JSON-LD -->
+		<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "LocalBusiness",
+			"name": "Les Créas d'Elf",
+			"description": "Créations artisanales faites main en France : bougies parfumées, bijoux, poteries et macramé.",
+			"url": "{{ url('/', true) }}",
+			"logo": "{{ url('/favicon.svg', true) }}",
+			"image": "{{ url('/assets/images/og-image.png', true) }}",
+			"email": "contact@lescreasdelf.fr",
+			"address": {
+				"@type": "PostalAddress",
+				"addressCountry": "FR"
+			},
+			"priceRange": "€€",
+			"sameAs": [],
+			"makesOffer": {
+				"@type": "Offer",
+				"itemOffered": {
+					"@type": "Product",
+					"name": "Créations artisanales",
+					"category": "Artisanat"
+				}
+			}
+		}
+		</script>
+
+		<!-- Google Fonts - Dancing Script, Cormorant Garamond, Nunito -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Dancing+Script:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="{{ asset('/assets/css/app.css') }}">
+	</head>
+
+	{# ═══════════════════════════════════════════════════════════════════════════
+							📌 HTMX BOOST (optionnel)
+							Pour navigation SPA-like, remplacez <body> par :
+							<body class="..." hx-boost="true" hx-target="#page-content" hx-swap="innerHTML">
+								<div id="page-content">
+							Et décommentez le </div> avant les scripts
+							═══════════════════════════════════════════════════════════════════════════ #}
+
+	<body class="min-h-screen flex flex-col bg-gray-50" hx-boost="true" hx-target="#page-content" hx-swap="innerHTML">
+		<div id="page-content">
+			{{ component('navbar') }}
+
+			<main class="flex-1">
+				{{ section('body') }}
+			</main>
+
+			<!-- Flash messages - positioned fixed at top -->
+			<div class="fixed top-32 left-0 right-0 z-50 pointer-events-none">
+				<div class="max-w-2xl mx-auto px-4 pointer-events-auto">
+					{{ component('flashes') }}
+				</div>
+			</div>
+
+			{{ component('footer') }}
+
+		</div>
+
+		{# ═══════════════════════════════════════════════════════════════════════════
+									📦 SCRIPTS
+									- htmx_script() : HTMX + Progress Bar automatique
+									- app.js : OganStimulus + Contrôleurs (module ES)
+									═══════════════════════════════════════════════════════════════════════════ #}
+		{{ htmx_script() }}
+		<script type="module" src="{{ asset('/assets/js/app.js') }}"></script>
+	</body>
+
+</html>

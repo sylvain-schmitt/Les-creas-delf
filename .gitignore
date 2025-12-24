@@ -1,0 +1,67 @@
+# Dependencies
+/vendor/
+composer.lock
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Cookies (générés par curl, extensions navigateur, etc.)
+cookies.txt
+*.cookies
+
+# Cache et logs
+/var/cache/*
+/var/log/*
+!/var/cache/.gitkeep
+!/var/log/.gitkeep
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tests
+.phpunit.result.cache
+.phpunit.cache
+/tests/
+phpunit.xml
+
+# Tailwind CLI
+tailwindcss-linux-x64
+tailwindcss-macos-arm64
+tailwindcss-windows-x64.exe
+tailwindcss
+
+# Assets compilés
+/public/assets/
+node_modules/
+package-lock.json
+
+# Configuration (à exclure du framework)
+tailwind.config.js
+
+# Database - Migrations générées localement
+/database/migrations/*.php
+!/database/migrations/README.md
+
+# Database - Base SQLite locale
+/var/db/
+*.db
+*.sqlite
+
+# Docker
+.dockerignore
+docker-compose.yml
+docker-compose.override.yml
+
+LICENSE
+CHANGELOG.md
+docs/

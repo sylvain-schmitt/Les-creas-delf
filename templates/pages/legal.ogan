@@ -1,0 +1,56 @@
+{{ extend('layouts/base.ogan') }}
+{{ title = 'Mentions Légales | Les Créas d\'Elf' }}
+{{ description = 'Mentions légales du site Les Créas d\'Elf : informations sur l\'éditeur, l\'hébergement, la propriété intellectuelle et les crédits du site.' }}
+
+{{ start('body') }}
+
+<section class="py-16">
+    <div class="blog-container">
+        <div class="max-w-3xl mx-auto" data-controller="scroll-reveal">
+            <h1 class="font-handwriting text-4xl font-semibold text-foreground mb-8">Mentions Légales</h1>
+
+            <div class="craft-card p-8 space-y-8">
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Éditeur du site</h2>
+                    <p class="text-muted">
+                        Les Créas d'Elf<br>
+                        Micro-entreprise<br>
+                        Adresse : [À compléter]<br>
+                        Email : contact@lescreasdelf.fr
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Hébergement</h2>
+                    <p class="text-muted">
+                        [Nom de l'hébergeur]<br>
+                        [Adresse de l'hébergeur]
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Propriété intellectuelle</h2>
+                    <p class="text-muted">
+                        L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur
+                        et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour
+                        les documents téléchargeables et les représentations iconographiques et photographiques.
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Crédits</h2>
+                    <p class="text-muted">
+                        Conception et réalisation : Les Créas d'Elf<br>
+                        Photographies : Les Créas d'Elf
+                    </p>
+                </div>
+            </div>
+
+            <p class="text-sm text-muted mt-6 text-center">
+                Dernière mise à jour : {{ date('d/m/Y') }}
+            </p>
+        </div>
+    </div>
+</section>
+
+{{ end }}

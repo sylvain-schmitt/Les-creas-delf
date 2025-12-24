@@ -1,0 +1,212 @@
+{{ extend('layouts/base.ogan') }}
+{{ title = 'Contact | Les Créas d\'Elf - Créations Artisanales' }}
+{{ description = 'Contactez Les Créas d\'Elf pour vos commandes personnalisées, questions ou devis. Réponse sous 24-48h. Livraison en France et Europe.' }}
+
+{{ start('body') }}
+
+<!-- Hero Section -->
+<section class="relative py-20 sm:py-28 overflow-hidden">
+    <!-- Background -->
+    <div class="absolute inset-0 bg-gradient-hero"></div>
+    <div class="absolute inset-0 pattern-dots opacity-20"></div>
+
+    <!-- Decorative blobs -->
+    <div class="absolute top-10 left-10 w-64 h-64 rounded-full opacity-30 pointer-events-none" style="background: radial-gradient(circle, rgba(192,116,89,0.4) 0%, transparent 70%); filter: blur(40px);"></div>
+    <div class="absolute bottom-20 right-10 w-48 h-48 rounded-full opacity-25 pointer-events-none" style="background: radial-gradient(circle, rgba(122,154,139,0.4) 0%, transparent 70%); filter: blur(40px);"></div>
+
+    <div class="relative z-10 blog-container">
+        <div class="max-w-3xl" data-controller="scroll-reveal">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 bg-accent-10 text-accent">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+                <span>Restons en contact</span>
+            </div>
+
+            <h1 class="font-handwriting text-5xl sm:text-6xl font-semibold text-foreground mb-4">
+                Contact
+            </h1>
+            <p class="font-serif text-xl text-muted italic">
+                Une question, une commande personnalisée ? N'hésitez pas à me contacter !
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-16">
+    <div class="blog-container">
+        <div class="grid lg:grid-cols-2 gap-12">
+
+            <!-- Contact Info -->
+            <div data-controller="scroll-reveal">
+                <h2 class="font-serif text-2xl font-semibold text-foreground mb-6">Informations</h2>
+
+                <div class="space-y-6">
+                    <!-- Email -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-primary-10 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 stroke-primary" fill="none" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-foreground">Email</h3>
+                            <p class="text-muted">contact@lescreasdelf.fr</p>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-accent-10 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 stroke-accent" fill="none" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-foreground">Localisation</h3>
+                            <p class="text-muted">France</p>
+                        </div>
+                    </div>
+
+                    <!-- Shipping -->
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-terracotta-10 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 stroke-craft-terracotta" fill="none" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-foreground">Livraison</h3>
+                            <p class="text-muted">Envoi soigné sous 3-5 jours ouvrés</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Links -->
+                <div class="mt-10">
+                    <h3 class="font-medium text-foreground mb-4">Suivez-moi</h3>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-10 h-10 rounded-xl bg-card border border-default flex items-center justify-center text-muted hover:text-primary hover:border-primary transition-all">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-card border border-default flex items-center justify-center text-muted hover:text-primary hover:border-primary transition-all">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-card border border-default flex items-center justify-center text-muted hover:text-primary hover:border-primary transition-all">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-card border border-default flex items-center justify-center text-muted hover:text-primary hover:border-primary transition-all">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div data-controller="scroll-reveal" data-scroll-reveal-delay="200">
+                <div class="craft-card p-6 sm:p-8">
+                    <h2 class="font-serif text-2xl font-semibold text-foreground mb-6">Envoyez-moi un message</h2>
+
+                    <form action="{{ path('contact') }}" method="POST" class="space-y-5">
+                        {{ csrf_input() }}
+
+                        <!-- Name -->
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-foreground mb-2">Votre nom</label>
+                            <input type="text" id="name" name="name" required
+                                   class="w-full px-4 py-3 border border-default rounded-xl bg-card text-foreground focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                                   placeholder="Marie Dupont">
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-foreground mb-2">Votre email</label>
+                            <input type="email" id="email" name="email" required
+                                   class="w-full px-4 py-3 border border-default rounded-xl bg-card text-foreground focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                                   placeholder="marie@exemple.fr">
+                        </div>
+
+                        <!-- Subject -->
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-foreground mb-2">Sujet</label>
+                            <select id="subject" name="subject" required
+                                    class="w-full px-4 py-3 border border-default rounded-xl bg-card text-foreground focus:ring-2 focus:ring-primary focus:border-primary transition-all">
+                                <option value="">Choisir un sujet...</option>
+                                <option value="question">Question sur un produit</option>
+                                <option value="custom">Commande personnalisée</option>
+                                <option value="order">Suivi de commande</option>
+                                <option value="other">Autre</option>
+                            </select>
+                        </div>
+
+                        <!-- Message -->
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-foreground mb-2">Votre message</label>
+                            <textarea id="message" name="message" rows="5" required
+                                      class="w-full px-4 py-3 border border-default rounded-xl bg-card text-foreground focus:ring-2 focus:ring-primary focus:border-primary transition-all resize-none"
+                                      placeholder="Décrivez votre demande..."></textarea>
+                        </div>
+
+                        <!-- Submit -->
+                        <button type="submit" class="w-full btn-primary py-3 flex items-center justify-center gap-2 group">
+                            <span>Envoyer le message</span>
+                            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 bg-secondary">
+    <div class="blog-container">
+        <div class="text-center mb-12" data-controller="scroll-reveal">
+            <h2 class="font-handwriting text-4xl font-semibold text-foreground mb-4">Questions fréquentes</h2>
+            <p class="text-muted">Trouvez rapidement les réponses à vos questions</p>
+        </div>
+
+        <div class="max-w-3xl mx-auto space-y-4">
+            <!-- FAQ Item 1 -->
+            <div class="craft-card p-5" data-controller="scroll-reveal" data-scroll-reveal-delay="100">
+                <h3 class="font-medium text-foreground mb-2">Comment passer commande ?</h3>
+                <p class="text-muted text-sm">Vous pouvez me contacter directement via le formulaire ci-dessus ou par email. Je vous répondrai sous 24-48h avec un devis personnalisé.</p>
+            </div>
+
+            <!-- FAQ Item 2 -->
+            <div class="craft-card p-5" data-controller="scroll-reveal" data-scroll-reveal-delay="200">
+                <h3 class="font-medium text-foreground mb-2">Quels sont les délais de fabrication ?</h3>
+                <p class="text-muted text-sm">Chaque création étant faite main, comptez entre 5 et 10 jours ouvrés selon la complexité du projet. Les commandes personnalisées peuvent nécessiter plus de temps.</p>
+            </div>
+
+            <!-- FAQ Item 3 -->
+            <div class="craft-card p-5" data-controller="scroll-reveal" data-scroll-reveal-delay="300">
+                <h3 class="font-medium text-foreground mb-2">Livrez-vous à l'international ?</h3>
+                <p class="text-muted text-sm">Oui, je livre en France métropolitaine et en Europe. Les frais de port sont calculés en fonction du poids et de la destination.</p>
+            </div>
+
+            <!-- FAQ Item 4 -->
+            <div class="craft-card p-5" data-controller="scroll-reveal" data-scroll-reveal-delay="400">
+                <h3 class="font-medium text-foreground mb-2">Proposez-vous des créations sur mesure ?</h3>
+                <p class="text-muted text-sm">Absolument ! J'adore créer des pièces uniques selon vos envies. Contactez-moi pour discuter de votre projet.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{ end }}

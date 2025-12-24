@@ -1,0 +1,628 @@
+@import "tailwindcss";
+/* Configuration dark mode pour le toggle manuel */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Thème Artisanal - Les Créas d'Elf
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+    /* Couleurs principales */
+    --color-background: #faf8f5;
+    --color-foreground: #3d3428;
+    --color-card: #fdfcfa;
+    --color-primary: #c07459;
+    --color-primary-light: #c98168;
+    --color-secondary: #f0ebe3;
+    --color-accent: #5a8a6b;
+    --color-muted: #978b7d;
+    --color-border: #e8e2d9;
+
+    /* Couleurs artisanales */
+    --color-craft-warm: #8b6f5c;
+    --color-craft-sage: #6b9a7d;
+    --color-craft-cream: #f5f0e6;
+    --color-craft-terracotta: #c4633f;
+}
+
+.dark {
+    --color-background: #1a1612;
+    --color-foreground: #f5f0e6;
+    --color-card: #241e18;
+    --color-primary: #d48b6a;
+    --color-primary-light: #e0a080;
+    --color-secondary: #2d261f;
+    --color-accent: #7ab88d;
+    --color-muted: #a99c8e;
+    --color-border: #3d3428;
+
+    --color-craft-warm: #a88570;
+    --color-craft-sage: #8bc49d;
+    --color-craft-cream: #2d261f;
+    --color-craft-terracotta: #d48068;
+}
+
+/* Navbar hover effects */
+.group:hover .nav-logo-circle {
+    background-color: rgba(192, 116, 89, 0.2) !important;
+}
+
+.group:hover .nav-logo-text {
+    color: var(--color-primary) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Typographie
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.font-handwriting {
+    font-family: 'Dancing Script', cursive;
+}
+
+.font-serif {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.font-sans {
+    font-family: 'Nunito', system-ui, sans-serif;
+}
+
+body {
+    font-family: 'Nunito', system-ui, sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Classes utilitaires - Couleurs
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Text colors */
+.text-foreground {
+    color: var(--color-foreground);
+}
+
+.text-muted {
+    color: var(--color-muted);
+}
+
+.text-primary {
+    color: var(--color-primary);
+}
+
+.text-accent {
+    color: var(--color-accent);
+}
+
+.text-craft-warm {
+    color: var(--color-craft-warm);
+}
+
+.text-craft-terracotta {
+    color: var(--color-craft-terracotta);
+}
+
+/* Background colors */
+.bg-background {
+    background-color: var(--color-background);
+}
+
+.bg-card {
+    background-color: var(--color-card);
+}
+
+.bg-secondary {
+    background-color: var(--color-secondary);
+}
+
+.bg-primary {
+    background-color: var(--color-primary);
+}
+
+.bg-primary-10 {
+    background-color: rgba(192, 116, 89, 0.1);
+}
+
+.bg-primary-20 {
+    background-color: rgba(192, 116, 89, 0.2);
+}
+
+.bg-accent-10 {
+    background-color: rgba(90, 138, 107, 0.1);
+}
+
+.bg-terracotta-10 {
+    background-color: rgba(196, 99, 63, 0.1);
+}
+
+/* Border colors */
+.border-default {
+    border-color: var(--color-border);
+}
+
+.border-primary {
+    border-color: var(--color-primary);
+}
+
+/* Header/Navbar background */
+.bg-navbar {
+    background-color: rgba(253, 252, 250, 0.8);
+    backdrop-filter: blur(8px);
+}
+
+.dark .bg-navbar {
+    background-color: rgba(26, 22, 18, 0.9);
+}
+
+/* Stroke colors for SVG */
+.stroke-primary {
+    stroke: var(--color-primary);
+}
+
+.stroke-muted {
+    stroke: var(--color-muted);
+}
+
+.stroke-accent {
+    stroke: var(--color-accent);
+}
+
+.stroke-craft-terracotta {
+    stroke: var(--color-craft-terracotta);
+}
+
+/* Additional background colors */
+.bg-accent {
+    background-color: var(--color-accent);
+}
+
+.bg-craft-terracotta {
+    background-color: var(--color-craft-terracotta);
+}
+
+/* Gradients - Warm & Vibrant */
+.bg-gradient-hero {
+    background: linear-gradient(135deg,
+            rgba(240, 235, 227, 0.95) 0%,
+            rgba(250, 248, 245, 0.9) 50%,
+            rgba(192, 116, 89, 0.08) 100%);
+}
+
+.dark .bg-gradient-hero {
+    background: linear-gradient(135deg,
+            rgba(30, 30, 35, 0.98) 0%,
+            rgba(40, 40, 48, 0.95) 50%,
+            rgba(192, 116, 89, 0.15) 100%);
+}
+
+.bg-gradient-cta {
+    background: linear-gradient(135deg, #c07459 0%, #c4633f 50%, #a85535 100%);
+}
+
+.bg-gradient-warm {
+    background: linear-gradient(180deg, rgba(192, 116, 89, 0.05) 0%, transparent 100%);
+}
+
+.dark .bg-gradient-warm {
+    background: linear-gradient(180deg, rgba(192, 116, 89, 0.1) 0%, transparent 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Hero Section - Parallax & Effects
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.hero-parallax {
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Decorative blobs - MORE VISIBLE */
+.blob-1 {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(192, 116, 89, 0.35) 0%, rgba(192, 116, 89, 0.1) 40%, transparent 70%);
+    border-radius: 50%;
+    top: -150px;
+    right: -100px;
+    z-index: 1;
+    animation: blob-float 15s ease-in-out infinite;
+    filter: blur(40px);
+}
+
+.blob-2 {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(90, 138, 107, 0.3) 0%, rgba(90, 138, 107, 0.1) 40%, transparent 70%);
+    border-radius: 50%;
+    bottom: -100px;
+    left: -100px;
+    z-index: 1;
+    animation: blob-float 20s ease-in-out infinite reverse;
+    filter: blur(35px);
+}
+
+.blob-3 {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(196, 99, 63, 0.25) 0%, rgba(196, 99, 63, 0.08) 40%, transparent 70%);
+    border-radius: 50%;
+    top: 30%;
+    right: 10%;
+    z-index: 1;
+    animation: blob-float 18s ease-in-out infinite;
+    filter: blur(30px);
+}
+
+@keyframes blob-float {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    25% {
+        transform: translate(30px, -40px) scale(1.1);
+    }
+
+    50% {
+        transform: translate(-20px, 30px) scale(0.9);
+    }
+
+    75% {
+        transform: translate(40px, 20px) scale(1.05);
+    }
+}
+
+/* Wave separator - VISIBLE */
+.shape-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    z-index: 10;
+}
+
+.shape-wave svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Animations - Scroll reveal & Micro-interactions
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Pulse animation for icons - SUBTLE */
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(192, 116, 89, 0.2);
+    }
+
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 0 8px 2px rgba(192, 116, 89, 0.1);
+    }
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 4s ease-in-out infinite;
+}
+
+/* Fade in up animation */
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 1.2s ease-out forwards;
+}
+
+/* Staggered animation delays */
+.delay-100 {
+    animation-delay: 0.1s;
+}
+
+.delay-200 {
+    animation-delay: 0.2s;
+}
+
+.delay-300 {
+    animation-delay: 0.3s;
+}
+
+.delay-400 {
+    animation-delay: 0.4s;
+}
+
+.delay-500 {
+    animation-delay: 0.5s;
+}
+
+/* Scale in animation */
+@keyframes scale-in {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-scale-in {
+    animation: scale-in 0.5s ease-out forwards;
+}
+
+/* Shimmer effect */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.animate-shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Composants - Boutons (Enhanced)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-craft-terracotta) 100%);
+    color: white;
+    box-shadow: 0 4px 14px rgba(192, 116, 89, 0.25);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(192, 116, 89, 0.35);
+}
+
+.btn-primary:hover::before {
+    opacity: 1;
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    border: 2px solid var(--color-border);
+    background-color: var(--color-card);
+    color: var(--color-foreground);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-outline:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background-color: rgba(192, 116, 89, 0.05);
+    transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Composants - Tags
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.category-tag {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background-color: var(--color-secondary);
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.category-tag:hover {
+    background-color: rgba(192, 116, 89, 0.1);
+    color: var(--color-primary);
+}
+
+.article-tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: white;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Composants - Newsletter
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.newsletter-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.newsletter-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.newsletter-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Utilitaires Blog
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.blog-container {
+    max-width: 70rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+    .blog-container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+.pattern-dots {
+    background-image: radial-gradient(var(--color-border) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+/* Carte artisanale - Enhanced */
+.craft-card {
+    background-color: var(--color-card);
+    border-radius: 1rem;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.craft-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 60%, rgba(192, 116, 89, 0.03) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.craft-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(192, 116, 89, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
+    border-color: rgba(192, 116, 89, 0.3);
+}
+
+.craft-card:hover::before {
+    opacity: 1;
+}
+
+/* Icon container in cards */
+.icon-container {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.craft-card:hover .icon-container {
+    transform: scale(1.1) rotate(3deg);
+    box-shadow: 0 4px 12px rgba(192, 116, 89, 0.2);
+}
+
+/* Badge */
+.craft-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: var(--color-secondary);
+    color: var(--color-muted);
+}
+
+/* Animation */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.6s ease-out;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HTMX Progress Bar : les styles sont inclus via {{ htmx_script() }}
+   ═══════════════════════════════════════════════════════════════════════════ */

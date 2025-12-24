@@ -1,0 +1,61 @@
+{{ extend('layouts/base.ogan') }}
+{{ title = 'Inscription | Les Créas d\'Elf' }}
+{{ description = 'Créez votre compte Les Créas d\'Elf pour découvrir nos créations artisanales et passer commande facilement.' }}
+
+{{ start('body') }}
+<div class="min-h-screen flex items-center justify-center relative overflow-hidden">
+    <!-- Background gradient -->
+    <div class="absolute inset-0 bg-gradient-hero"></div>
+
+    <!-- Decorative blobs -->
+    <div class="absolute top-10 right-10 w-64 h-64 rounded-full opacity-30 pointer-events-none" style="background: radial-gradient(circle, rgba(122,154,139,0.4) 0%, transparent 70%); filter: blur(40px);"></div>
+    <div class="absolute bottom-20 left-10 w-48 h-48 rounded-full opacity-25 pointer-events-none" style="background: radial-gradient(circle, rgba(192,116,89,0.4) 0%, transparent 70%); filter: blur(40px);"></div>
+
+    <!-- Register Card -->
+    <div class="relative max-w-md w-full mx-4 py-8">
+        <div class="craft-card p-8 sm:p-10" id="form-container" hx-boost="true" data-controller="scroll-reveal">
+            <!-- Logo -->
+            <div class="text-center mb-8">
+                <a href="{{ path('index') }}" class="inline-flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 rounded-xl bg-primary-10 flex items-center justify-center">
+                        <svg class="w-6 h-6 stroke-primary" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+                        </svg>
+                    </div>
+                    <span class="font-handwriting text-2xl font-medium text-foreground">Les Créas d'Elf</span>
+                </a>
+
+                <!-- Badge -->
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium text-primary bg-primary-10 mb-4">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                    </svg>
+                    Rejoignez-nous
+                </div>
+
+                <h1 class="font-serif text-3xl font-semibold text-foreground mb-2">Inscription</h1>
+                <p class="text-muted">Créez votre compte gratuitement</p>
+            </div>
+
+            {% form.render() %}
+
+            <div class="mt-6 pt-6 border-t border-default text-center text-sm text-muted">
+                Déjà un compte ?
+                <a href="{{ path('login') }}" class="text-primary hover:text-primary/80 font-semibold transition-colors">
+                    Se connecter
+                </a>
+            </div>
+        </div>
+
+        <!-- Back to home -->
+        <div class="text-center mt-6">
+            <a href="{{ path('index') }}" class="text-sm text-muted hover:text-foreground transition-colors inline-flex items-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Retour à l'accueil
+            </a>
+        </div>
+    </div>
+</div>
+{{ end }}

@@ -1,0 +1,49 @@
+{{ title = title ?? 'Dashboard' }}
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Les Créas d'Elf</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Dancing+Script:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('/assets/css/app.css') }}">
+</head>
+<body class="h-full bg-secondary dark:bg-gray-900 transition-colors duration-200" hx-boost="true" hx-target="#page-content" hx-swap="innerHTML" hx-select="#page-content">
+
+    <div id="page-content">
+        <div class="min-h-full">
+
+            <!-- Sidebar -->
+            {{ component('admin/sidebar') }}
+
+            <!-- Main Content -->
+            <div class="md:pl-64 flex flex-col min-h-screen transition-all duration-300">
+
+                <!-- Navbar -->
+                {{ component('admin/navbar', ['user' => user]) }}
+
+                <!-- Main Content Area -->
+                <main class="flex-1 p-4 sm:p-6 lg:p-8">
+                    {{ component('flashes') }}
+
+                    {{ section('content') }}
+                </main>
+
+                <!-- Footer -->
+                <footer class="p-4 sm:p-6 lg:p-8 pt-0">
+                    <div class="text-center text-sm text-muted">
+                        © {{ date('Y') }} Les Créas d'Elf — Espace administration
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts: HTMX + OganStimulus -->
+    {{ htmx_script() }}
+    <script type="module" src="{{ asset('/assets/js/app.js') }}"></script>
+</body>
+</html>

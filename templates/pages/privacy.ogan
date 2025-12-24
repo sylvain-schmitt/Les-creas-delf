@@ -1,0 +1,83 @@
+{{ extend('layouts/base.ogan') }}
+{{ title = 'Politique de Confidentialité | Les Créas d\'Elf' }}
+{{ description = 'Politique de confidentialité RGPD de Les Créas d\'Elf : collecte, utilisation, protection de vos données personnelles et vos droits.' }}
+
+{{ start('body') }}
+
+<section class="py-16">
+    <div class="blog-container">
+        <div class="max-w-3xl mx-auto" data-controller="scroll-reveal">
+            <h1 class="font-handwriting text-4xl font-semibold text-foreground mb-8">Politique de Confidentialité</h1>
+
+            <div class="craft-card p-8 space-y-8">
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Collecte des données</h2>
+                    <p class="text-muted">
+                        Nous collectons uniquement les données nécessaires au traitement de vos commandes :
+                        nom, prénom, adresse email, adresse postale. Ces données sont collectées lors de
+                        votre prise de contact ou de votre commande.
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Utilisation des données</h2>
+                    <p class="text-muted">
+                        Vos données personnelles sont utilisées exclusivement pour :
+                    </p>
+                    <ul class="list-disc list-inside text-muted mt-2 space-y-1">
+                        <li>Traiter et expédier vos commandes</li>
+                        <li>Répondre à vos demandes de contact</li>
+                        <li>Vous informer sur l'état de votre commande</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Protection des données</h2>
+                    <p class="text-muted">
+                        Nous mettons en œuvre toutes les mesures techniques et organisationnelles appropriées
+                        pour protéger vos données personnelles contre tout accès non autorisé.
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Conservation des données</h2>
+                    <p class="text-muted">
+                        Vos données sont conservées pendant la durée nécessaire à la gestion de la relation
+                        commerciale, et conformément aux obligations légales de conservation.
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Vos droits</h2>
+                    <p class="text-muted">
+                        Conformément au RGPD, vous disposez des droits suivants :
+                    </p>
+                    <ul class="list-disc list-inside text-muted mt-2 space-y-1">
+                        <li>Droit d'accès à vos données</li>
+                        <li>Droit de rectification</li>
+                        <li>Droit à l'effacement</li>
+                        <li>Droit à la limitation du traitement</li>
+                        <li>Droit à la portabilité</li>
+                    </ul>
+                    <p class="text-muted mt-3">
+                        Pour exercer ces droits, contactez-nous à : contact@lescreasdelf.fr
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Cookies</h2>
+                    <p class="text-muted">
+                        Ce site utilise uniquement des cookies techniques essentiels au fonctionnement du site.
+                        Aucun cookie de tracking ou publicitaire n'est utilisé.
+                    </p>
+                </div>
+            </div>
+
+            <p class="text-sm text-muted mt-6 text-center">
+                Dernière mise à jour : {{ date('d/m/Y') }}
+            </p>
+        </div>
+    </div>
+</section>
+
+{{ end }}

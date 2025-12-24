@@ -1,0 +1,137 @@
+<header class="border-b border-default sticky top-0 z-50 bg-navbar">
+	<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+		<div class="flex items-center justify-between">
+			<!-- Logo avec hover effect -->
+			<a href="{{ path('index') }}" class="group flex items-center gap-3">
+				<div class="nav-logo-circle w-10 h-10 rounded-full bg-primary-10 flex items-center justify-center transition-colors">
+					<!-- Lucide Sparkles icon -->
+					<svg class="w-5 h-5 stroke-primary" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+						<path d="M20 3v4"/>
+						<path d="M22 5h-4"/>
+						<path d="M4 17v2"/>
+						<path d="M5 18H3"/>
+					</svg>
+				</div>
+				<div>
+					<h1 class="nav-logo-text font-handwriting text-2xl font-semibold tracking-wide text-foreground transition-colors">Les Créas d'Elf</h1>
+					<p class="text-xs font-sans text-muted">Créations artisanales & fait-main</p>
+				</div>
+			</a>
+
+			<!-- Navigation Desktop (caché sur mobile) -->
+			<nav class="hidden sm:flex items-center gap-8" data-controller="nav-active">
+				<a href="{{ path('index') }}" data-nav-path="/" class="nav-link text-sm font-medium text-muted transition-colors hover:text-primary relative">
+					Accueil
+				</a>
+				<a href="{{ path('creations') }}" data-nav-path="/creations" class="nav-link text-sm font-medium text-muted transition-colors hover:text-primary relative">
+					Créations
+				</a>
+				<a href="{{ path('about') }}" data-nav-path="/a-propos" class="nav-link text-sm font-medium text-muted transition-colors hover:text-primary relative">
+					À propos
+				</a>
+				<a href="{{ path('contact') }}" data-nav-path="/contact" class="nav-link text-sm font-medium text-muted transition-colors hover:text-primary relative">
+					Contact
+				</a>
+
+				<!-- Dark Mode Toggle -->
+				<button type="button"
+						data-controller="theme"
+						data-action="click->theme#toggle"
+						class="text-muted hover:text-foreground hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-xl text-sm p-2.5 transition-all"
+						aria-label="Changer le thème">
+					<svg data-theme-target="darkIcon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+					<svg data-theme-target="lightIcon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+				</button>
+			</nav>
+
+			<!-- Burger Menu Button (visible sur mobile) -->
+			<div class="flex items-center gap-2 sm:hidden">
+				<!-- Dark Mode Toggle Mobile -->
+				<button type="button"
+						data-controller="theme"
+						data-action="click->theme#toggle"
+						class="p-2 rounded-lg text-muted hover:text-foreground hover:bg-secondary transition-colors"
+						aria-label="Changer le thème">
+					<svg data-theme-target="darkIcon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+					<svg data-theme-target="lightIcon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+				</button>
+
+				<!-- Burger Menu -->
+				<button
+					type="button"
+					data-controller="sidebar"
+					data-action="click->sidebar#toggle"
+					class="p-2 rounded-lg text-foreground transition-colors hover:bg-secondary"
+					aria-label="Menu"
+				>
+					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+					</svg>
+				</button>
+			</div>
+		</div>
+	</div>
+</header>
+
+<!-- Mobile Menu Overlay -->
+<div id="sidebar-overlay"
+     class="hidden fixed inset-0 bg-black/50 z-40 sm:hidden"
+     data-controller="sidebar"
+     data-action="click->sidebar#close">
+</div>
+
+<!-- Mobile Menu Panel -->
+<aside id="sidebar"
+       class="fixed top-0 left-0 z-50 w-64 h-full bg-card border-r border-default transform -translate-x-full transition-transform duration-300 ease-out sm:hidden">
+	<div class="p-4">
+		<!-- Header avec bouton fermer -->
+		<div class="flex items-center justify-between mb-6">
+			<span class="font-handwriting text-xl font-semibold text-foreground">Menu</span>
+			<button
+				type="button"
+				data-controller="sidebar"
+				data-action="click->sidebar#close"
+				class="p-2 rounded-lg text-muted hover:bg-secondary transition-colors"
+				aria-label="Fermer le menu"
+			>
+				<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M18 6 6 18"/>
+					<path d="m6 6 12 12"/>
+				</svg>
+			</button>
+		</div>
+
+		<!-- Navigation links -->
+		<nav class="flex flex-col gap-2" data-controller="nav-active">
+			<a href="{{ path('index') }}"
+			   data-nav-path="/"
+			   data-controller="sidebar"
+			   data-action="click->sidebar#close"
+			   class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-muted transition-colors hover:bg-secondary">
+				Accueil
+			</a>
+			<a href="{{ path('creations') }}"
+			   data-nav-path="/creations"
+			   data-controller="sidebar"
+			   data-action="click->sidebar#close"
+			   class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-muted transition-colors hover:bg-secondary">
+				Créations
+			</a>
+			<a href="{{ path('about') }}"
+			   data-nav-path="/a-propos"
+			   data-controller="sidebar"
+			   data-action="click->sidebar#close"
+			   class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-muted transition-colors hover:bg-secondary">
+				À propos
+			</a>
+			<a href="{{ path('contact') }}"
+			   data-nav-path="/contact"
+			   data-controller="sidebar"
+			   data-action="click->sidebar#close"
+			   class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-muted transition-colors hover:bg-secondary">
+				Contact
+			</a>
+		</nav>
+	</div>
+</aside>
