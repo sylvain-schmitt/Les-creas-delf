@@ -4,9 +4,12 @@
  * ═══════════════════════════════════════════════════════════════════════
  * 🔑 PASSWORD RESET SERVICE
  * ═══════════════════════════════════════════════════════════════════════
- * 
+ *
  * Gère la réinitialisation des mots de passe (via email ou direct).
- * 
+ *
+ * Le template de l'email est modifiable dans :
+ * templates/emails/password_reset.ogan
+ *
  * ═══════════════════════════════════════════════════════════════════════
  */
 
@@ -17,14 +20,30 @@ use Ogan\Config\Config;
 use Ogan\Mail\Mailer;
 use Ogan\Mail\Email;
 use Ogan\Security\PasswordHasher;
+use Ogan\View\View;
 
 class PasswordResetService
 {
     private PasswordHasher $hasher;
+    private ?View $view = null;
 
     public function __construct()
     {
         $this->hasher = new PasswordHasher();
+    }
+
+    /**
+     * Récupère l'instance View pour le rendu des templates email
+     */
+    private function getView(): View
+    {
+        if ($this->view === null) {
+            $templatesPath = Config::get('view.templates_path', dirname(__DIR__, 2) . '/templates');
+            $cacheDir = Config::get('cache.path', dirname(__DIR__, 2) . '/var/cache') . '/templates';
+            // Activer le compilateur pour les templates .ogan
+            $this->view = new View($templatesPath, true, $cacheDir);
+        }
+        return $this->view;
     }
 
     /**
@@ -38,29 +57,38 @@ class PasswordResetService
         $user->save();
 
         try {
-            $mailer = new Mailer(Config::get('mail.dsn', 'smtp://localhost:1025'));
-            
+            $dsn = Config::get('mailer.dsn') ?? Config::get('mail.dsn', 'smtp://localhost:1025');
+            $mailer = new Mailer($dsn);
+
             $resetUrl = $this->getBaseUrl() . '/reset-password/' . $token;
-            
-            // S'assurer que mail.from est une string
+
+            // Récupérer les paramètres d'envoi
             $fromEmail = Config::get('mail.from', 'noreply@example.com');
             if (is_array($fromEmail)) {
                 $fromEmail = $fromEmail[0] ?? 'noreply@example.com';
             }
-            $fromName = Config::get('mail.from_name', '');
+            $fromName = Config::get('mail.from_name', Config::get('app.name', ''));
             if (is_array($fromName)) {
                 $fromName = $fromName[0] ?? '';
             }
-            
+
+            // Rendre le template email (modifiable par l'utilisateur)
+            $htmlContent = $this->getView()->render('emails/password_reset.ogan', [
+                'user' => $user,
+                'url' => $resetUrl,
+                'appName' => Config::get('app.name', 'Mon Application'),
+            ]);
+
             $email = (new Email())
                 ->from((string) $fromEmail, (string) $fromName)
                 ->to($user->getEmail())
                 ->subject('Réinitialisation de votre mot de passe')
-                ->html($this->getEmailTemplate($user, $resetUrl));
-            
+                ->html($htmlContent);
+
             $mailer->send($email);
             return true;
         } catch (\Exception $e) {
+            error_log('Password reset email error: ' . $e->getMessage());
             return false;
         }
     }
@@ -71,7 +99,7 @@ class PasswordResetService
     public function validateToken(string $token): ?User
     {
         $result = User::where('password_reset_token', '=', $token)->first();
-        
+
         if (!$result) {
             return null;
         }
@@ -87,7 +115,7 @@ class PasswordResetService
         if ($user->getPasswordResetExpiresAt() < date('Y-m-d H:i:s')) {
             return null;
         }
-        
+
         return $user;
     }
 
@@ -108,7 +136,7 @@ class PasswordResetService
     public function resetPasswordDirect(string $email, string $newPassword): bool
     {
         $user = User::findByEmail($email);
-        
+
         if (!$user) {
             return false;
         }
@@ -122,54 +150,14 @@ class PasswordResetService
      */
     private function getBaseUrl(): string
     {
+        // Priorité : config > server
+        $configUrl = Config::get('app.url') ?? Config::get('app.base_url');
+        if ($configUrl) {
+            return rtrim($configUrl, '/');
+        }
+
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
         return $protocol . '://' . $host;
-    }
-
-    /**
-     * Template de l'email de réinitialisation
-     */
-    private function getEmailTemplate(User $user, string $url): string
-    {
-        return <<<HTML
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Réinitialisation de mot de passe</title>
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center; }
-        .header h1 { color: white; margin: 0; font-size: 24px; }
-        .content { background: #f9fafb; padding: 30px; border: 1px solid #e5e7eb; }
-        .button { display: inline-block; background: #ef4444; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; margin: 20px 0; }
-        .footer { text-align: center; padding: 20px; color: #6b7280; font-size: 12px; }
-        .warning { background: #fef3c7; border: 1px solid #f59e0b; padding: 15px; border-radius: 6px; margin: 15px 0; }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h1>Réinitialisation de mot de passe</h1>
-    </div>
-    <div class="content">
-        <p>Bonjour {$user->getName()},</p>
-        <p>Vous avez demandé à réinitialiser votre mot de passe. Cliquez sur le bouton ci-dessous pour choisir un nouveau mot de passe :</p>
-        <p style="text-align: center;">
-            <a href="{$url}" class="button">Réinitialiser mon mot de passe</a>
-        </p>
-        <p>Ou copiez ce lien dans votre navigateur :</p>
-        <p style="word-break: break-all; color: #ef4444;">{$url}</p>
-        <div class="warning">
-            Important : Si vous n'avez pas demandé cette réinitialisation, ignorez cet email. Votre mot de passe restera inchangé.
-        </div>
-    </div>
-    <div class="footer">
-        <p>Ce lien expire dans 1 heure.</p>
-    </div>
-</body>
-</html>
-HTML;
     }
 }

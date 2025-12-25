@@ -4,9 +4,12 @@
  * ═══════════════════════════════════════════════════════════════════════
  * ✉️ EMAIL VERIFICATION SERVICE
  * ═══════════════════════════════════════════════════════════════════════
- * 
+ *
  * Gère la vérification d'email des utilisateurs.
- * 
+ *
+ * Le template de l'email est modifiable dans :
+ * templates/emails/verify_email.ogan
+ *
  * ═══════════════════════════════════════════════════════════════════════
  */
 
@@ -16,9 +19,26 @@ use App\Model\User;
 use Ogan\Config\Config;
 use Ogan\Mail\Mailer;
 use Ogan\Mail\Email;
+use Ogan\View\View;
 
 class EmailVerificationService
 {
+    private ?View $view = null;
+
+    /**
+     * Récupère l'instance View pour le rendu des templates email
+     */
+    private function getView(): View
+    {
+        if ($this->view === null) {
+            $templatesPath = Config::get('view.templates_path', dirname(__DIR__, 2) . '/templates');
+            $cacheDir = Config::get('cache.path', dirname(__DIR__, 2) . '/var/cache') . '/templates';
+            // Activer le compilateur pour les templates .ogan
+            $this->view = new View($templatesPath, true, $cacheDir);
+        }
+        return $this->view;
+    }
+
     /**
      * Envoie un email de vérification
      */
@@ -29,30 +49,39 @@ class EmailVerificationService
         $user->save();
 
         try {
-            $mailer = new Mailer(Config::get('mail.dsn', 'smtp://localhost:1025'));
-            
+            $dsn = Config::get('mailer.dsn') ?? Config::get('mail.dsn', 'smtp://localhost:1025');
+            $mailer = new Mailer($dsn);
+
             $verifyUrl = $this->getBaseUrl() . '/verify-email/' . $token;
-            
-            // S'assurer que mail.from est une string
+
+            // Récupérer les paramètres d'envoi
             $fromEmail = Config::get('mail.from', 'noreply@example.com');
             if (is_array($fromEmail)) {
                 $fromEmail = $fromEmail[0] ?? 'noreply@example.com';
             }
-            $fromName = Config::get('mail.from_name', '');
+            $fromName = Config::get('mail.from_name', Config::get('app.name', ''));
             if (is_array($fromName)) {
                 $fromName = $fromName[0] ?? '';
             }
-            
+
+            // Rendre le template email (modifiable par l'utilisateur)
+            $htmlContent = $this->getView()->render('emails/verify_email.ogan', [
+                'user' => $user,
+                'url' => $verifyUrl,
+                'appName' => Config::get('app.name', 'Mon Application'),
+            ]);
+
             $email = (new Email())
                 ->from((string) $fromEmail, (string) $fromName)
                 ->to($user->getEmail())
                 ->subject('Vérifiez votre adresse email')
-                ->html($this->getEmailTemplate($user, $verifyUrl));
-            
+                ->html($htmlContent);
+
             $mailer->send($email);
             return true;
         } catch (\Exception $e) {
             // Log error but don't break registration
+            error_log('Email verification error: ' . $e->getMessage());
             return false;
         }
     }
@@ -63,7 +92,7 @@ class EmailVerificationService
     public function verify(string $token): ?User
     {
         $result = User::where('email_verification_token', '=', $token)->first();
-        
+
         if (!$result) {
             return null;
         }
@@ -74,12 +103,12 @@ class EmailVerificationService
         if (!$user) {
             return null;
         }
-        
+
         // Marquer comme vérifié
         $user->setEmailVerifiedAt(date('Y-m-d H:i:s'));
         $user->setEmailVerificationToken(null);
         $user->save();
-        
+
         return $user;
     }
 
@@ -88,51 +117,14 @@ class EmailVerificationService
      */
     private function getBaseUrl(): string
     {
+        // Priorité : config > server
+        $configUrl = Config::get('app.url') ?? Config::get('app.base_url');
+        if ($configUrl) {
+            return rtrim($configUrl, '/');
+        }
+
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
         return $protocol . '://' . $host;
-    }
-
-    /**
-     * Template de l'email de vérification
-     */
-    private function getEmailTemplate(User $user, string $url): string
-    {
-        return <<<HTML
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vérifiez votre email</title>
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center; }
-        .header h1 { color: white; margin: 0; font-size: 24px; }
-        .content { background: #f9fafb; padding: 30px; border: 1px solid #e5e7eb; }
-        .button { display: inline-block; background: #4f46e5; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; margin: 20px 0; }
-        .footer { text-align: center; padding: 20px; color: #6b7280; font-size: 12px; }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h1>Vérification de votre email</h1>
-    </div>
-    <div class="content">
-        <p>Bonjour {$user->getName()},</p>
-        <p>Merci de vous être inscrit ! Pour activer votre compte, veuillez vérifier votre adresse email en cliquant sur le bouton ci-dessous :</p>
-        <p style="text-align: center;">
-            <a href="{$url}" class="button">Vérifier mon email</a>
-        </p>
-        <p>Ou copiez ce lien dans votre navigateur :</p>
-        <p style="word-break: break-all; color: #4f46e5;">{$url}</p>
-        <p>Si vous n'avez pas créé de compte, ignorez simplement cet email.</p>
-    </div>
-    <div class="footer">
-        <p>Ce lien expire dans 24 heures.</p>
-    </div>
-</body>
-</html>
-HTML;
     }
 }
