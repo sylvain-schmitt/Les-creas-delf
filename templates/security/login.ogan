@@ -40,12 +40,12 @@
 				</div>
 			{% endif %}
 
-			<div class="mt-6 pt-6 border-t border-default text-center text-sm text-muted">
+			{# <div class="mt-6 pt-6 border-t border-default text-center text-sm text-muted">
 				Pas encore de compte ?
 				<a href="{{ path('register') }}" class="text-primary hover:text-primary/80 font-semibold transition-colors">
 					Créer un compte
 				</a>
-			</div>
+			</div> #}
 		</div>
 
 		<!-- Back to home -->

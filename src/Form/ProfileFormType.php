@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Model\User;
 use Ogan\Form\AbstractType;
 use Ogan\Form\FormBuilder;
 use Ogan\Form\Types\TextType;
@@ -11,6 +12,7 @@ use Ogan\Form\Types\SubmitType;
 use Ogan\Form\Constraint\Required;
 use Ogan\Form\Constraint\Email;
 use Ogan\Form\Constraint\MinLength;
+use Ogan\Form\Constraint\UniqueEntity;
 
 class ProfileFormType extends AbstractType
 {
@@ -32,7 +34,8 @@ class ProfileFormType extends AbstractType
                 'label' => 'Adresse email',
                 'constraints' => [
                     new Required('L\'email est obligatoire'),
-                    new Email('L\'email n\'est pas valide')
+                    new Email('L\'email n\'est pas valide'),
+                    new UniqueEntity(User::class, 'email', 'Cet email est déjà utilisé.', $options['user_id'] ?? null)
                 ],
                 'attr' => [
                     'class' => 'w-full px-4 py-3 border border-default rounded-xl bg-card text-foreground focus:ring-2 focus:ring-primary focus:border-primary transition-all',
