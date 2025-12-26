@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use Ogan\Controller\AbstractController;
-use Ogan\Http\Request;
 use Ogan\Http\Response;
 use Ogan\Router\Attributes\Route;
 use Ogan\Security\PasswordHasher;
