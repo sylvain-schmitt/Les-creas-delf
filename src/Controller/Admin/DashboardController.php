@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use Ogan\Controller\AbstractController;
 use Ogan\Http\Response;
 use Ogan\Router\Attributes\Route;
+use Ogan\Security\Attribute\IsGranted;
 use Ogan\Security\PasswordHasher;
 use App\Security\UserAuthenticator;
 use App\Form\ProfileFormType;
@@ -22,6 +23,7 @@ class DashboardController extends AbstractController
     }
 
     #[Route(path: '/dashboard', methods: ['GET'], name: 'dashboard_index')]
+    #[IsGranted('ROLE_ADMIN', message: 'Accès réservé aux administrateurs.')]
     public function index(): Response
     {
         if (!$this->getAuth()->isLoggedIn($this->session)) {

@@ -40,6 +40,34 @@ class SecurityController extends AbstractController
         $this->rememberMe = new RememberMeService();
     }
 
+    /**
+     * Détermine l'URL de redirection après login selon le rôle
+     *
+     * Configure dans parameters.yaml:
+     *   auth:
+     *     login_redirect: /          # Défaut pour les users
+     *     role_redirects:
+     *       ROLE_ADMIN: /dashboard
+     *       ROLE_AUTHOR: /my-articles
+     */
+    private function getLoginRedirectUrl(User $user): string
+    {
+        // Récupérer les redirections par rôle depuis la config
+        $roleRedirects = Config::get('auth.role_redirects', []);
+
+        if (!empty($roleRedirects)) {
+            // Vérifier chaque rôle dans l'ordre de priorité
+            foreach ($roleRedirects as $role => $redirectUrl) {
+                if ($user->hasRole($role)) {
+                    return $redirectUrl;
+                }
+            }
+        }
+
+        // Redirection par défaut
+        return Config::get('auth.login_redirect', '/dashboard');
+    }
+
     // ═══════════════════════════════════════════════════════════════════
     // 🔐 LOGIN
     // ═══════════════════════════════════════════════════════════════════
@@ -48,7 +76,8 @@ class SecurityController extends AbstractController
     public function login()
     {
         if ($this->authenticator->isLoggedIn($this->session)) {
-            return $this->redirect(Config::get('auth.login_redirect', '/dashboard'));
+            $user = $this->authenticator->getUser($this->session);
+            return $this->redirect($this->getLoginRedirectUrl($user));
         }
 
         $form = $this->formFactory->create(LoginFormType::class, [
@@ -62,6 +91,7 @@ class SecurityController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
                 $user = $this->authenticator->attempt($data['email'], $data['password']);
+
                 if ($user) {
                     // Vérifier si l'email doit être validé
                     if (Config::get('auth.send_verification_email', false) && !$user->isVerified()) {
@@ -73,14 +103,16 @@ class SecurityController extends AbstractController
                         if (!empty($data['remember_me'])) {
                             $this->rememberMe->createToken($user->id);
                         }
+
                         $this->addFlash('success', 'Connexion réussie. Bienvenue !');
-                        return $this->redirect(Config::get('auth.login_redirect', '/dashboard'));
+                        return $this->redirect($this->getLoginRedirectUrl($user));
                     }
                 } else {
                     $form->addError('email', 'Email ou mot de passe incorrect.');
                 }
             }
         }
+
         return $this->render('security/login.ogan', [
             'title' => 'Connexion',
             'form' => $form->createView(),
@@ -113,10 +145,6 @@ class SecurityController extends AbstractController
     #[Route(path: '/register', methods: ['GET', 'POST'], name: 'register')]
     public function register()
     {
-     if (!Config::get('registration.enabled', true)) {
-        return $this->accessDenied('Les inscriptions sont fermées.');
-    }
-
         if ($this->authenticator->isLoggedIn($this->session)) {
             return $this->redirect('/dashboard');
         }
@@ -143,7 +171,7 @@ class SecurityController extends AbstractController
 
                 $this->authenticator->login($user, $this->session);
                 $this->addFlash('success', 'Compte créé avec succès !');
-                return $this->redirect(Config::get('auth.login_redirect', '/dashboard'));
+                return $this->redirect($this->getLoginRedirectUrl($user));
             }
         }
 
