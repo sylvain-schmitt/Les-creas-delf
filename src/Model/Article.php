@@ -53,6 +53,25 @@ class Article extends Model
         return $this->excerpt;
     }
 
+    /**
+     * Get excerpt or generate from content if empty
+     */
+    public function getExcerptOrGenerate(int $length = 150): string
+    {
+        if ($this->excerpt) {
+            return $this->excerpt;
+        }
+        return \Ogan\Util\Text::excerpt($this->content ?? '', $length);
+    }
+
+    /**
+     * Get reading time formatted string
+     */
+    public function getReadingTime(): string
+    {
+        return \Ogan\Util\Text::readingTimeFormatted($this->content ?? '');
+    }
+
     public function getContent(): ?string
     {
         return $this->content;
