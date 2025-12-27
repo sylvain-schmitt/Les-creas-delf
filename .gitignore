@@ -64,4 +64,4 @@ docker-compose.override.yml
 
 LICENSE
 CHANGELOG.md
-docs/
+/docs

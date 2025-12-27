@@ -30,6 +30,7 @@ class ArticleController extends AbstractController
         $this->categoryRepository = new CategoryRepository();
         $this->tagRepository = new TagRepository();
         $this->articleService = new ArticleService();
+
     }
 
     private function getAuth(): UserAuthenticator
@@ -77,7 +78,6 @@ class ArticleController extends AbstractController
                 return $this->redirect('/admin/articles/' . $article->id . '/edit');
             }
         }
-
         return $this->render('admin/article/create.ogan', [
             'title' => 'Nouvel article',
             'form' => $form->createView(),

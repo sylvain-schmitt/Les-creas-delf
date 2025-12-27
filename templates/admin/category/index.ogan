@@ -1,0 +1,93 @@
+{{ extend('layouts/admin.ogan') }}
+
+{{ start('content') }}
+<div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+        <div>
+            <h1 class="font-serif text-2xl font-semibold text-foreground">Catégories</h1>
+            <p class="text-muted">Gérez les catégories de votre blog</p>
+        </div>
+        <a href="{{ path('admin_category_create') }}" class="btn-primary mt-4 sm:mt-0 inline-flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Nouvelle catégorie
+        </a>
+    </div>
+
+    <!-- Flash Messages -->
+    {{ component('flashes') }}
+
+    <!-- Categories Table -->
+    <div class="craft-card overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-muted/10">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-muted">Nom</th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-muted">Slug</th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-muted">Articles</th>
+                        <th class="px-6 py-4 text-right text-sm font-medium text-muted">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-default">
+                    {% if categories|length > 0 %}
+                        {% for category in categories %}
+                        <tr class="hover:bg-muted/5 transition-colors">
+                            <td class="px-6 py-4">
+                                <span class="font-medium text-foreground">{{ category.name }}</span>
+                                {% if category.description %}
+                                    <p class="text-sm text-muted mt-1">{{ category.description|truncate(50) }}</p>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4">
+                                <code class="text-sm text-muted bg-muted/10 px-2 py-1 rounded">{{ category.slug }}</code>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-10 text-primary">
+                                    {{ category.articles_count ?? 0 }} article{% if (category.articles_count ?? 0) > 1 %}s{% endif %}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex items-center justify-end gap-2">
+                                    <a href="{{ path('admin_category_edit', ['id' => category.id]) }}"
+                                       class="p-2 text-muted hover:text-primary hover:bg-primary-10 rounded-lg transition-colors"
+                                       title="Modifier">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        </svg>
+                                    </a>
+                                    {% if (category.articles_count ?? 0) == 0 %}
+                                    <form action="{{ path('admin_category_delete', ['id' => category.id]) }}" method="POST" class="inline"
+                                          onsubmit="return confirm('Supprimer cette catégorie ?')">
+                                        <button type="submit"
+                                                class="p-2 text-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                title="Supprimer">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="px-6 py-12 text-center text-muted">
+                                <svg class="w-12 h-12 mx-auto mb-4 text-muted/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                                </svg>
+                                <p class="font-medium">Aucune catégorie</p>
+                                <p class="text-sm mt-1">Créez votre première catégorie pour organiser vos articles.</p>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{{ end }}

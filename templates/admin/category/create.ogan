@@ -1,0 +1,34 @@
+{{ extend('layouts/admin.ogan') }}
+
+{{ start('content') }}
+<div class="max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <a href="{{ path('admin_category_index') }}" class="inline-flex items-center text-muted hover:text-primary transition-colors mb-4">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Retour aux catégories
+        </a>
+        <h1 class="font-serif text-2xl font-semibold text-foreground">Nouvelle catégorie</h1>
+        <p class="text-muted">Créez une nouvelle catégorie pour organiser vos articles</p>
+    </div>
+
+    <!-- Flash Messages -->
+    {{ component('flashes') }}
+
+    <!-- Form -->
+    <div class="craft-card p-6 sm:p-8">
+        {{ form.start|raw }}
+            <div class="space-y-6">
+                {{ form.name|raw }}
+                {{ form.description|raw }}
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-default">
+                {{ form.submit|raw }}
+            </div>
+        {{ form.end|raw }}
+    </div>
+</div>
+{{ end }}
