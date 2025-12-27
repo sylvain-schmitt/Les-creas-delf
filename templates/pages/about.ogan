@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="mt-8 flex items-center gap-4">
-                    <a href="{{ path('creations') }}" class="btn-primary">Voir mes créations</a>
+                    <a href="{{ path('blog') }}" class="btn-primary">Voir le blog</a>
                     <a href="{{ path('contact') }}" class="btn-outline">Me contacter</a>
                 </div>
             </div>

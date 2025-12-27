@@ -1,6 +1,6 @@
 {{ extend('layouts/base.ogan') }}
-{{ title = 'Mes Créations Artisanales | Les Créas d\'Elf' }}
-{{ description = 'Découvrez nos créations artisanales uniques : bougies parfumées, bijoux fait main, poteries et macramé. Chaque pièce est faite avec passion en France.' }}
+{{ title = 'Blog | Les Créas d\'Elf' }}
+{{ description = 'Découvrez le blog de Les Créas d\'Elf : articles sur l\'artisanat, tutoriels DIY, inspirations créatives et actualités de l\'atelier.' }}
 
 {{ start('body') }}
 

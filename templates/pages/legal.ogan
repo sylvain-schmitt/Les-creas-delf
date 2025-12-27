@@ -1,6 +1,6 @@
 {{ extend('layouts/base.ogan') }}
 {{ title = 'Mentions Légales | Les Créas d\'Elf' }}
-{{ description = 'Mentions légales du site Les Créas d\'Elf : informations sur l\'éditeur, l\'hébergement, la propriété intellectuelle et les crédits du site.' }}
+{{ description = 'Mentions légales du blog Les Créas d\'Elf : informations sur l\'éditeur, l\'hébergement, la propriété intellectuelle et les responsabilités.' }}
 
 {{ start('body') }}
 
@@ -14,8 +14,15 @@
                     <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Éditeur du site</h2>
                     <p class="text-muted">
                         Les Créas d'Elf<br>
-                        Micro-entreprise<br>
-                        Adresse : [À compléter]<br>
+                        Blog personnel dédié à l'artisanat et aux créations faites main<br>
+                        Email : contact@lescreasdelf.fr
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Directrice de la publication</h2>
+                    <p class="text-muted">
+                        Delphine (Les Créas d'Elf)<br>
                         Email : contact@lescreasdelf.fr
                     </p>
                 </div>
@@ -24,16 +31,38 @@
                     <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Hébergement</h2>
                     <p class="text-muted">
                         [Nom de l'hébergeur]<br>
-                        [Adresse de l'hébergeur]
+                        [Adresse de l'hébergeur]<br>
+                        [Site web de l'hébergeur]
                     </p>
                 </div>
 
                 <div>
                     <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Propriété intellectuelle</h2>
                     <p class="text-muted">
-                        L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur
-                        et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour
-                        les documents téléchargeables et les représentations iconographiques et photographiques.
+                        L'ensemble du contenu de ce blog (textes, images, photographies, vidéos, illustrations)
+                        est la propriété exclusive de Les Créas d'Elf, sauf mention contraire. Toute reproduction,
+                        représentation ou diffusion, totale ou partielle, du contenu de ce site par quelque procédé
+                        que ce soit, sans l'autorisation expresse de l'éditeur, est interdite et constituerait
+                        une contrefaçon sanctionnée par les articles L.335-2 et suivants du Code de la propriété intellectuelle.
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Responsabilité</h2>
+                    <p class="text-muted">
+                        Les informations publiées sur ce blog sont fournies à titre indicatif et ne sauraient
+                        engager la responsabilité de l'éditeur. L'éditeur ne peut être tenu responsable des
+                        éventuelles erreurs ou omissions présentes sur le site, ni de l'utilisation qui pourrait
+                        être faite des informations contenues.
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Commentaires</h2>
+                    <p class="text-muted">
+                        Les commentaires publiés sur ce blog engagent uniquement la responsabilité de leurs auteurs.
+                        L'éditeur se réserve le droit de modérer, modifier ou supprimer tout commentaire contraire
+                        à la netiquette, au respect d'autrui ou à la législation en vigueur.
                     </p>
                 </div>
 
@@ -41,7 +70,8 @@
                     <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Crédits</h2>
                     <p class="text-muted">
                         Conception et réalisation : Les Créas d'Elf<br>
-                        Photographies : Les Créas d'Elf
+                        Photographies : Les Créas d'Elf (sauf mention contraire)<br>
+                        Icônes : Lucide Icons
                     </p>
                 </div>
             </div>

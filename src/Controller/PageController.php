@@ -8,11 +8,11 @@ use Ogan\Router\Attributes\Route;
 
 class PageController extends AbstractController
 {
-    #[Route(path: '/creations', methods: ['GET'], name: 'creations')]
-    public function creations(): Response
+    #[Route(path: '/blog', methods: ['GET'], name: 'blog')]
+    public function blog(): Response
     {
-        return $this->render('pages/creations.ogan', [
-            'title' => 'Mes Créations - Les Créas d\'Elf'
+        return $this->render('pages/blog.ogan', [
+            'title' => 'Blog - Les Créas d\'Elf'
         ]);
     }
 
@@ -44,14 +44,6 @@ class PageController extends AbstractController
     {
         return $this->render('pages/legal.ogan', [
             'title' => 'Mentions Légales - Les Créas d\'Elf'
-        ]);
-    }
-
-    #[Route(path: '/cgv', methods: ['GET'], name: 'cgv')]
-    public function cgv(): Response
-    {
-        return $this->render('pages/cgv.ogan', [
-            'title' => 'CGV - Les Créas d\'Elf'
         ]);
     }
 

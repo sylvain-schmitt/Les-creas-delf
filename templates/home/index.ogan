@@ -48,8 +48,8 @@
 
 				<!-- Boutons -->
 				<div class="flex flex-wrap gap-4 animate-fade-in-up delay-400" style="opacity: 0;">
-					<a href="#creations" class="btn-primary group">
-						<span>✨ Découvrir mes créations</span>
+					<a href="{{ path('blog') }}" class="btn-primary group">
+						<span>✨ Découvrir le blog</span>
 						<svg class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<path d="M5 12h14M12 5l7 7-7 7"/>
 						</svg>
@@ -131,7 +131,7 @@
 </div>
 
 <!-- Categories -->
-<section class="blog-container py-8" id="creations">
+<section class="blog-container py-8" id="articles">
 	<div class="flex flex-wrap justify-center gap-2" data-controller="scroll-reveal">
 		<span class="category-tag">Bougies</span>
 		<span class="category-tag">Bijoux</span>

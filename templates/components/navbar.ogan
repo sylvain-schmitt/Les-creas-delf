@@ -24,8 +24,8 @@
 				<a href="{{ path('index') }}" data-nav-path="/" class="nav-link text-sm font-medium text-muted transition-colors hover:text-primary relative">
 					Accueil
 				</a>
-				<a href="{{ path('creations') }}" data-nav-path="/creations" class="nav-link text-sm font-medium text-muted transition-colors hover:text-primary relative">
-					Créations
+				<a href="{{ path('blog') }}" data-nav-path="/blog" class="nav-link text-sm font-medium text-muted transition-colors hover:text-primary relative">
+					Blog
 				</a>
 				<a href="{{ path('about') }}" data-nav-path="/a-propos" class="nav-link text-sm font-medium text-muted transition-colors hover:text-primary relative">
 					À propos
@@ -111,12 +111,12 @@
 			   class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-muted transition-colors hover:bg-secondary">
 				Accueil
 			</a>
-			<a href="{{ path('creations') }}"
-			   data-nav-path="/creations"
+			<a href="{{ path('blog') }}"
+			   data-nav-path="/blog"
 			   data-controller="sidebar"
 			   data-action="click->sidebar#close"
 			   class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-muted transition-colors hover:bg-secondary">
-				Créations
+				Blog
 			</a>
 			<a href="{{ path('about') }}"
 			   data-nav-path="/a-propos"

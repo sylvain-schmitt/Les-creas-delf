@@ -1,6 +1,6 @@
 {{ extend('layouts/base.ogan') }}
 {{ title = 'Politique de Confidentialité | Les Créas d\'Elf' }}
-{{ description = 'Politique de confidentialité RGPD de Les Créas d\'Elf : collecte, utilisation, protection de vos données personnelles et vos droits.' }}
+{{ description = 'Politique de confidentialité RGPD du blog Les Créas d\'Elf : données collectées, cookies, commentaires et vos droits.' }}
 
 {{ start('body') }}
 
@@ -11,64 +11,95 @@
 
             <div class="craft-card p-8 space-y-8">
                 <div>
-                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Collecte des données</h2>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Introduction</h2>
                     <p class="text-muted">
-                        Nous collectons uniquement les données nécessaires au traitement de vos commandes :
-                        nom, prénom, adresse email, adresse postale. Ces données sont collectées lors de
-                        votre prise de contact ou de votre commande.
+                        Le blog Les Créas d'Elf s'engage à protéger la vie privée de ses visiteurs.
+                        Cette politique de confidentialité explique quelles données nous collectons,
+                        pourquoi nous les collectons et comment nous les utilisons.
                     </p>
                 </div>
 
                 <div>
-                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Utilisation des données</h2>
-                    <p class="text-muted">
-                        Vos données personnelles sont utilisées exclusivement pour :
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Données collectées</h2>
+                    <p class="text-muted mb-3">
+                        Nous collectons uniquement les données que vous nous fournissez volontairement :
                     </p>
-                    <ul class="list-disc list-inside text-muted mt-2 space-y-1">
-                        <li>Traiter et expédier vos commandes</li>
-                        <li>Répondre à vos demandes de contact</li>
-                        <li>Vous informer sur l'état de votre commande</li>
+                    <ul class="list-disc list-inside text-muted space-y-1">
+                        <li><strong>Formulaire de contact</strong> : nom, adresse email, message</li>
+                        <li><strong>Commentaires</strong> : nom, adresse email, contenu du commentaire</li>
+                        <li><strong>Inscription (si applicable)</strong> : nom, adresse email</li>
                     </ul>
                 </div>
 
                 <div>
-                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Protection des données</h2>
-                    <p class="text-muted">
-                        Nous mettons en œuvre toutes les mesures techniques et organisationnelles appropriées
-                        pour protéger vos données personnelles contre tout accès non autorisé.
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Utilisation des données</h2>
+                    <p class="text-muted mb-3">
+                        Vos données personnelles sont utilisées exclusivement pour :
+                    </p>
+                    <ul class="list-disc list-inside text-muted space-y-1">
+                        <li>Répondre à vos demandes via le formulaire de contact</li>
+                        <li>Publier vos commentaires sur les articles du blog</li>
+                        <li>Vous identifier lors de la connexion (si inscrit)</li>
+                    </ul>
+                    <p class="text-muted mt-3">
+                        Vos données ne sont jamais vendues, partagées ou transmises à des tiers.
                     </p>
                 </div>
 
                 <div>
                     <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Conservation des données</h2>
                     <p class="text-muted">
-                        Vos données sont conservées pendant la durée nécessaire à la gestion de la relation
-                        commerciale, et conformément aux obligations légales de conservation.
-                    </p>
-                </div>
-
-                <div>
-                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Vos droits</h2>
-                    <p class="text-muted">
-                        Conformément au RGPD, vous disposez des droits suivants :
-                    </p>
-                    <ul class="list-disc list-inside text-muted mt-2 space-y-1">
-                        <li>Droit d'accès à vos données</li>
-                        <li>Droit de rectification</li>
-                        <li>Droit à l'effacement</li>
-                        <li>Droit à la limitation du traitement</li>
-                        <li>Droit à la portabilité</li>
-                    </ul>
-                    <p class="text-muted mt-3">
-                        Pour exercer ces droits, contactez-nous à : contact@lescreasdelf.fr
+                        Les données des commentaires sont conservées aussi longtemps que le commentaire reste publié.
+                        Les données du formulaire de contact sont supprimées après traitement de votre demande.
+                        Les données de compte utilisateur sont conservées jusqu'à suppression du compte.
                     </p>
                 </div>
 
                 <div>
                     <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Cookies</h2>
+                    <p class="text-muted mb-3">
+                        Ce site utilise uniquement des cookies essentiels au fonctionnement :
+                    </p>
+                    <ul class="list-disc list-inside text-muted space-y-1">
+                        <li><strong>Session</strong> : maintient votre connexion active</li>
+                        <li><strong>Thème</strong> : mémorise votre préférence de thème (clair/sombre)</li>
+                    </ul>
+                    <p class="text-muted mt-3">
+                        Aucun cookie de tracking, de publicité ou d'analyse n'est utilisé.
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Vos droits (RGPD)</h2>
+                    <p class="text-muted mb-3">
+                        Conformément au Règlement Général sur la Protection des Données, vous disposez des droits suivants :
+                    </p>
+                    <ul class="list-disc list-inside text-muted space-y-1">
+                        <li>Droit d'accès à vos données personnelles</li>
+                        <li>Droit de rectification des données inexactes</li>
+                        <li>Droit à l'effacement (« droit à l'oubli »)</li>
+                        <li>Droit à la limitation du traitement</li>
+                        <li>Droit d'opposition au traitement</li>
+                        <li>Droit à la portabilité de vos données</li>
+                    </ul>
+                    <p class="text-muted mt-3">
+                        Pour exercer ces droits, contactez-nous à : <a href="mailto:contact@lescreasdelf.fr" class="text-primary hover:underline">contact@lescreasdelf.fr</a>
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Sécurité</h2>
                     <p class="text-muted">
-                        Ce site utilise uniquement des cookies techniques essentiels au fonctionnement du site.
-                        Aucun cookie de tracking ou publicitaire n'est utilisé.
+                        Nous mettons en œuvre des mesures de sécurité appropriées pour protéger vos données
+                        contre tout accès non autorisé, modification, divulgation ou destruction.
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="font-serif text-xl font-semibold text-foreground mb-3">Contact</h2>
+                    <p class="text-muted">
+                        Pour toute question concernant cette politique de confidentialité ou vos données personnelles,
+                        contactez-nous à : <a href="mailto:contact@lescreasdelf.fr" class="text-primary hover:underline">contact@lescreasdelf.fr</a>
                     </p>
                 </div>
             </div>
