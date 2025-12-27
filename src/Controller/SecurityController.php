@@ -145,6 +145,10 @@ class SecurityController extends AbstractController
     #[Route(path: '/register', methods: ['GET', 'POST'], name: 'register')]
     public function register()
     {
+        // Vérifier si l'inscription est activée
+        if (!Config::get('registration.enabled', true)) {
+            return $this->accessDenied('Inscriptions fermées.');
+        }
         if ($this->authenticator->isLoggedIn($this->session)) {
             return $this->redirect('/dashboard');
         }

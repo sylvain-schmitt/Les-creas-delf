@@ -10,6 +10,7 @@ use Ogan\Security\PasswordHasher;
 use App\Security\UserAuthenticator;
 use App\Form\ProfileFormType;
 
+#[IsGranted('ROLE_USER', message: 'Accès réservé aux utilisateurs.')]
 class DashboardController extends AbstractController
 {
     private ?UserAuthenticator $auth = null;
@@ -23,7 +24,6 @@ class DashboardController extends AbstractController
     }
 
     #[Route(path: '/dashboard', methods: ['GET'], name: 'dashboard_index')]
-    #[IsGranted('ROLE_ADMIN', message: 'Accès réservé aux administrateurs.')]
     public function index(): Response
     {
         if (!$this->getAuth()->isLoggedIn($this->session)) {
@@ -32,9 +32,18 @@ class DashboardController extends AbstractController
 
         $user = $this->getAuth()->getUser($this->session);
 
-        return $this->render('admin/dashboard/index.ogan', [
+        // Afficher le dashboard selon le rôle
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            return $this->render('admin/dashboard/index.ogan', [
+                'user' => $user,
+                'title' => 'Tableau de bord Admin'
+            ]);
+        }
+
+        // Dashboard utilisateur standard
+        return $this->render('admin/dashboard/user.ogan', [
             'user' => $user,
-            'title' => 'Tableau de bord'
+            'title' => 'Mon espace'
         ]);
     }
 
