@@ -22,6 +22,7 @@ import ThemeController from './controllers/theme_controller.js';
 import SidebarController from './controllers/sidebar_controller.js';
 import ScrollRevealController from './controllers/scroll_reveal_controller.js';
 import NavActiveController from './controllers/nav_active_controller.js';
+import ConfirmModalController from './controllers/confirm_modal_controller.js';
 
 // ─────────────────────────────────────────────────────────────────────────
 // Initialisation de l'application
@@ -34,22 +35,13 @@ app.register('theme', ThemeController);
 app.register('sidebar', SidebarController);
 app.register('scroll-reveal', ScrollRevealController);
 app.register('nav-active', NavActiveController);
+app.register('confirm-modal', ConfirmModalController);
 
 // ─────────────────────────────────────────────────────────────────────────
 // Ajoutez vos contrôleurs personnalisés ci-dessous
 // ─────────────────────────────────────────────────────────────────────────
 // import MonController from './controllers/mon_controller.js';
 // app.register('mon', MonController);
-
-// ─────────────────────────────────────────────────────────────────────────
-// Compatibilité HTMX - Délai pour laisser le DOM se stabiliser
-// ─────────────────────────────────────────────────────────────────────────
-document.addEventListener('htmx:afterSwap', () => {
-    setTimeout(() => app.refresh(), 50);
-});
-document.addEventListener('htmx:load', () => {
-    setTimeout(() => app.refresh(), 50);
-});
 
 // ─────────────────────────────────────────────────────────────────────────
 // Export pour utilisation avancée

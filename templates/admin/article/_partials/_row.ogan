@@ -1,0 +1,136 @@
+{#
+    Partial Ligne - Une seule ligne du tableau
+    Utilisé pour :
+    - Afficher chaque article dans la liste
+    - Remplacer une ligne après modification via HTMX
+    NOTE: Le contenu principal (<tr>) DOIT être en premier pour HTMX,
+          les éléments OOB viennent APRÈS.
+#}
+
+<tr id="article-{{ article.getId() }}" class="flex flex-col md:table-row border-b border-default last:border-0 md:border-0 hover:bg-muted/5 transition-colors p-4 md:p-0">
+    <td class="block md:table-cell px-0 py-2 md:px-6 md:py-4">
+        <div class="flex items-center justify-between md:block">
+            <span class="md:hidden font-serif font-semibold text-muted">Article</span>
+            <div class="max-w-xs text-right md:text-left">
+                <span class="font-medium text-foreground block">{{ (article.title ?? '')|truncate(50) }}</span>
+                <p class="text-sm text-muted mt-1">{{ article.slug ?? '' }}</p>
+            </div>
+        </div>
+    </td>
+    <td class="block md:table-cell px-0 py-2 md:px-6 md:py-4">
+        <div class="flex items-center justify-between md:block">
+            <span class="md:hidden text-xs font-semibold text-muted uppercase tracking-wider">Catégorie</span>
+            <div>
+                {% if article.category_id %}
+                    <span class="text-sm text-foreground">—</span>
+                {% else %}
+                    <span class="text-sm text-muted">Non classé</span>
+                {% endif %}
+            </div>
+        </div>
+    </td>
+    <td class="block md:table-cell px-0 py-2 md:px-6 md:py-4">
+        <div class="flex items-center justify-between md:block">
+            <span class="md:hidden text-xs font-semibold text-muted uppercase tracking-wider">Statut</span>
+            <div>
+                {% if article.status == 'published' %}
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        Publié
+                    </span>
+                {% elseif article.status == 'draft' %}
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                        Brouillon
+                    </span>
+                {% else %}
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                        Archivé
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    </td>
+    <td class="block md:table-cell px-0 py-2 md:px-6 md:py-4">
+        <div class="flex items-center justify-between md:block">
+            <span class="md:hidden text-xs font-semibold text-muted uppercase tracking-wider">Date</span>
+            <span class="text-sm text-muted">
+                {% if article.status == 'published' and article.getPublishedAt() %}
+                    {{ article.getPublishedAt() }}
+                {% else %}
+                    {{ article.getCreatedAt() ?? 'N/A' }}
+                {% endif %}
+            </span>
+        </div>
+    </td>
+    <td class="block md:table-cell px-0 py-4 md:px-6 md:py-4 md:text-right border-t border-dashed border-default md:border-t-0 mt-2 md:mt-0">
+        <div class="flex items-center justify-end gap-2">
+            <!-- Voir -->
+             <a href="{{ path('admin_article_show', ['id' => article.getId()]) }}"
+               class="p-2 text-muted hover:text-primary hover:bg-primary-10 rounded-lg transition-colors"
+               title="Voir">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+            </a>
+
+            <!-- Éditer -->
+            <a href="{{ path('admin_article_edit', ['id' => article.getId()]) }}"
+               class="p-2 text-muted hover:text-primary hover:bg-primary-10 rounded-lg transition-colors"
+               title="Modifier">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+            </a>
+
+            <!-- Publish/Unpublish via HTMX -->
+            {% if article.status == 'draft' %}
+            <button
+                hx-post="{{ path('admin_article_publish', ['id' => article.getId()]) }}"
+                hx-target="#article-{{ article.getId() }}"
+                hx-swap="outerHTML"
+                hx-boost="false"
+                hx-select="tr"
+                class="p-2 text-muted hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                title="Publier">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </button>
+            {% elseif article.status == 'published' %}
+            <button
+                hx-post="{{ path('admin_article_unpublish', ['id' => article.getId()]) }}"
+                hx-target="#article-{{ article.getId() }}"
+                hx-swap="outerHTML"
+                hx-boost="false"
+                hx-select="tr"
+                class="p-2 text-muted hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors"
+                title="Dépublier">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </button>
+            {% endif %}
+
+            <!-- Supprimer via Modal de confirmation -->
+            <button
+            type="button"
+                data-controller="confirm-modal"
+                data-action="click->confirm-modal#open"
+                data-confirm-modal-title-param="Supprimer l'article"
+                data-confirm-modal-message-param="Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible."
+                data-confirm-modal-url-param="{{ path('admin_article_delete', ['id' => article.getId()]) }}"
+                data-confirm-modal-method-param="POST"
+                class="p-2 text-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                title="Supprimer">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+            </button>
+        </div>
+    </td>
+</tr>
+
+{# Les éléments OOB doivent venir APRÈS le contenu principal #}
+{% if showFlashOob ?? false %}
+    {{ component('flashes', ['oob' => true]) }}
+{% endif %}

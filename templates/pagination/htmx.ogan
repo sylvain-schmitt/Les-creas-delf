@@ -1,0 +1,82 @@
+{% if paginator.hasPages() %}
+<nav role="navigation" aria-label="Pagination" class="flex flex-col sm:flex-row items-center justify-between mt-8 gap-4">
+
+    <!-- Info Summary -->
+    <div class="text-center sm:text-left">
+        <p class="text-sm text-muted">
+            Affichage de
+            <span class="font-medium text-foreground">{{ paginator.firstItem() }}</span>
+            à
+            <span class="font-medium text-foreground">{{ paginator.lastItem() }}</span>
+            sur
+            <span class="font-medium text-foreground">{{ paginator.total() }}</span>
+            résultats
+        </p>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="flex items-center gap-1">
+        {# Previous Page Link #}
+        {% if paginator.onFirstPage() %}
+            <span class="inline-flex items-center justify-center w-10 h-10 text-muted bg-card border border-default rounded-lg cursor-not-allowed opacity-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </span>
+        {% else %}
+            <a href="{{ paginator.previousPageUrl() }}"
+               hx-get="{{ paginator.previousPageUrl() }}"
+               hx-target="{{ target }}"
+               hx-swap="{{ swap }}"
+               hx-disinherit="*"
+               rel="prev"
+               class="inline-flex items-center justify-center w-10 h-10 text-muted bg-card border border-default rounded-lg hover:text-foreground hover:border-foreground/20 transition-colors cursor-pointer">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </a>
+        {% endif %}
+
+        {# Page Numbers #}
+        {% for page in pages %}
+            {% if page.type == 'ellipsis' %}
+                <span class="inline-flex items-center justify-center w-10 h-10 text-muted">...</span>
+            {% elseif page.type == 'current' %}
+                <span class="inline-flex items-center justify-center w-10 h-10 text-primary-foreground bg-primary rounded-lg font-medium">
+                    {{ page.number }}
+                </span>
+            {% else %}
+                <a href="{{ page.url }}"
+                   hx-get="{{ page.url }}"
+                   hx-target="{{ target }}"
+                   hx-swap="{{ swap }}"
+                   hx-disinherit="*"
+                   class="inline-flex items-center justify-center w-10 h-10 text-muted bg-card border border-default rounded-lg hover:text-foreground hover:border-foreground/20 transition-colors cursor-pointer">
+                    {{ page.number }}
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {# Next Page Link #}
+        {% if paginator.hasMorePages() %}
+            <a href="{{ paginator.nextPageUrl() }}"
+               hx-get="{{ paginator.nextPageUrl() }}"
+               hx-target="{{ target }}"
+               hx-swap="{{ swap }}"
+               hx-disinherit="*"
+               rel="next"
+               class="inline-flex items-center justify-center w-10 h-10 text-muted bg-card border border-default rounded-lg hover:text-foreground hover:border-foreground/20 transition-colors cursor-pointer">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </a>
+        {% else %}
+            <span class="inline-flex items-center justify-center w-10 h-10 text-muted bg-card border border-default rounded-lg cursor-not-allowed opacity-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </span>
+        {% endif %}
+    </div>
+</nav>
+{% endif %}

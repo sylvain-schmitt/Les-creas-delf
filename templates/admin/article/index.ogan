@@ -1,13 +1,15 @@
 {{ extend('layouts/admin.ogan') }}
 
 {{ start('content') }}
-<div class="max-w-6xl mx-auto">
+<div class="max-w-6xl mx-auto" data-controller="scroll-reveal">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
         <div>
             <h1 class="font-serif text-2xl font-semibold text-foreground">Articles</h1>
             <p class="text-muted">Gérez les articles de votre blog</p>
         </div>
+
+        <!-- Lien vers la page de création -->
         <a href="{{ path('admin_article_create') }}" class="btn-primary mt-4 sm:mt-0 inline-flex items-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -16,122 +18,11 @@
         </a>
     </div>
 
-    <!-- Flash Messages -->
-    {{ component('flashes') }}
 
-    <!-- Articles Table -->
-    <div class="craft-card overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-muted/10">
-                    <tr>
-                        <th class="px-6 py-4 text-left text-sm font-medium text-muted">Article</th>
-                        <th class="px-6 py-4 text-left text-sm font-medium text-muted">Catégorie</th>
-                        <th class="px-6 py-4 text-left text-sm font-medium text-muted">Statut</th>
-                        <th class="px-6 py-4 text-left text-sm font-medium text-muted">Date</th>
-                        <th class="px-6 py-4 text-right text-sm font-medium text-muted">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-default">
-                    {% if articles|length > 0 %}
-                        {% for article in articles %}
-                        <tr class="hover:bg-muted/5 transition-colors">
-                            <td class="px-6 py-4">
-                                <div class="max-w-xs">
-                                    <span class="font-medium text-foreground">{{ article.title|truncate(50) }}</span>
-                                    <p class="text-sm text-muted mt-1">{{ article.slug }}</p>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                {% if article.category_id %}
-                                    <span class="text-sm text-foreground">—</span>
-                                {% else %}
-                                    <span class="text-sm text-muted">Non classé</span>
-                                {% endif %}
-                            </td>
-                            <td class="px-6 py-4">
-                                {% if article.status == 'published' %}
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                        Publié
-                                    </span>
-                                {% elseif article.status == 'draft' %}
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                        Brouillon
-                                    </span>
-                                {% else %}
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                        Archivé
-                                    </span>
-                                {% endif %}
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="text-sm text-muted">
-                                    {{ article.created_at|date('d/m/Y') }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <!-- Edit -->
-                                    <a href="{{ path('admin_article_edit', ['id' => article.id]) }}"
-                                       class="p-2 text-muted hover:text-primary hover:bg-primary-10 rounded-lg transition-colors"
-                                       title="Modifier">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                        </svg>
-                                    </a>
 
-                                    <!-- Publish/Unpublish -->
-                                    {% if article.status == 'draft' %}
-                                    <form action="{{ path('admin_article_publish', ['id' => article.id]) }}" method="POST" class="inline">
-                                        <button type="submit"
-                                                class="p-2 text-muted hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                                                title="Publier">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                            </svg>
-                                        </button>
-                                    </form>
-                                    {% elseif article.status == 'published' %}
-                                    <form action="{{ path('admin_article_unpublish', ['id' => article.id]) }}" method="POST" class="inline">
-                                        <button type="submit"
-                                                class="p-2 text-muted hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors"
-                                                title="Dépublier">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                            </svg>
-                                        </button>
-                                    </form>
-                                    {% endif %}
+   <!-- Zone de la liste - mise à jour par HTMX -->
+    {{ component('admin/article/_partials/_list', ['articles' => articles]) }}
 
-                                    <!-- Delete -->
-                                    <form action="{{ path('admin_article_delete', ['id' => article.id]) }}" method="POST" class="inline"
-                                          onsubmit="return confirm('Supprimer cet article ?')">
-                                        <button type="submit"
-                                                class="p-2 text-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                                title="Supprimer">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                            </svg>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="5" class="px-6 py-12 text-center text-muted">
-                                <svg class="w-12 h-12 mx-auto mb-4 text-muted/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                                </svg>
-                                <p class="font-medium">Aucun article</p>
-                                <p class="text-sm mt-1">Créez votre premier article pour commencer.</p>
-                            </td>
-                        </tr>
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
     </div>
 </div>
 {{ end }}

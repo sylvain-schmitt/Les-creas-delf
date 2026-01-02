@@ -51,6 +51,7 @@ tailwind.config.js
 # Database - Migrations générées localement
 /database/migrations/*.php
 !/database/migrations/README.md
+/database/seeders/*.php
 
 # Database - Base SQLite locale
 /var/db/

@@ -1,0 +1,64 @@
+{#
+    Partial Formulaire - Formulaire réutilisable pour création et édition
+    Peut être affiché dans une modal ou une page complète.
+#}
+
+<div class="bg-card rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-semibold text-foreground">
+            {{ submitLabel }}
+        </h2>
+        <button
+            type="button"
+            @click="$dispatch('close-modal')"
+            class="p-2 text-muted hover:text-foreground rounded-lg transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+
+    <form
+        hx-post="{{ action }}"
+        hx-target="#articles-list"
+        hx-swap="innerHTML"
+        class="space-y-6"
+    >
+        {{ form._csrf_token }}
+
+        <!-- Titre -->
+        <div>
+            {{ form.title }}
+        </div>
+
+        <!-- Catégorie et Statut -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+                {{ form.category_id }}
+            </div>
+            <div>
+                {{ form.status }}
+            </div>
+        </div>
+
+        <!-- Contenu WYSIWYG -->
+        <div>
+            {{ form.content }}
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end gap-4 pt-6 border-t border-default">
+            <button
+                type="button"
+                @click="$dispatch('close-modal')"
+                class="px-4 py-2 text-muted hover:text-foreground transition-colors">
+                Annuler
+            </button>
+            <button
+                type="submit"
+                class="btn-primary">
+                {{ submitLabel }}
+            </button>
+        </div>
+    </form>
+</div>

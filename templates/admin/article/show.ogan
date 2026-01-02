@@ -1,0 +1,112 @@
+{{ extend('layouts/admin.ogan') }}
+
+{{ start('content') }}
+<div class="max-w-4xl mx-auto" data-controller="scroll-reveal">
+    <!-- Header -->
+    <div class="mb-8 flex items-center justify-between">
+        <a href="{{ path('admin_article_index') }}" class="inline-flex items-center text-muted hover:text-primary transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Retour aux articles
+        </a>
+
+        <div class="flex gap-3">
+            <a href="{{ path('admin_article_edit', ['id' => article.getId()]) }}" class="btn-primary px-4 py-2">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+                Modifier
+            </a>
+        </div>
+    </div>
+
+    <!-- Article Content Card -->
+    <div class="craft-card p-6 sm:p-10 mb-8" data-controller="scroll-reveal" data-scroll-reveal-delay="200">
+
+        <!-- Meta Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 border-b border-default pb-6">
+            <div>
+                {% if article.status == 'published' %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 mb-3">
+                        Publié
+                    </span>
+                {% elseif article.status == 'draft' %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800 mb-3">
+                        Brouillon
+                    </span>
+                {% else %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 mb-3">
+                        Archivé
+                    </span>
+                {% endif %}
+
+                <h1 class="font-serif text-3xl sm:text-4xl font-bold text-foreground leading-tight">{{ article.title }}</h1>
+            </div>
+
+            <div class="flex flex-col items-end text-sm text-muted gap-1">
+                {% if article.getPublishedAt() %}
+                    <p>Publié le : <span class="font-medium text-foreground">{{ article.getPublishedAt() }}</span></p>
+                {% else %}
+                    <p>Créé le : <span class="font-medium text-foreground">{{ article.getCreatedAt() }}</span></p>
+                {% endif %}
+                <p>Auteur : <span class="font-medium text-foreground">{{ author ? author.getName() : 'Inconnu' }}</span></p>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="prose prose-stone max-w-none">
+            {% if article.content %}
+                {{ article.content|raw }}
+            {% else %}
+                <div class="p-8 text-center bg-muted/5 rounded-xl border border-dashed border-default text-muted">
+                    <p>Aucun contenu pour cet article.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Meta Footer -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-controller="scroll-reveal" data-scroll-reveal-delay="400">
+        <!-- Categories & Tags -->
+        <div class="craft-card p-6">
+            <h3 class="font-serif text-lg font-semibold text-foreground mb-4">Classification</h3>
+
+            <div class="space-y-4">
+                <div>
+                    <span class="text-xs font-semibold text-muted uppercase tracking-wider block mb-2">Catégorie</span>
+                    {% if article.category_id %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-10 text-primary">
+                            <!-- TODO: Afficher le nom de la catégorie -->
+                            ID: {{ article.category_id }}
+                        </span>
+                    {% else %}
+                        <span class="text-muted italic">Non classé</span>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <span class="text-xs font-semibold text-muted uppercase tracking-wider block mb-2">Mots-clés</span>
+                    <!-- TODO: Liste des tags -->
+                    <span class="text-muted italic text-sm">Aucun tag associé</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEO Preview (Simulated) -->
+        <div class="craft-card p-6">
+            <h3 class="font-serif text-lg font-semibold text-foreground mb-4">Aperçu SEO</h3>
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+                <p class="text-[#1a0dab] text-xl truncate hover:underline cursor-pointer">{{ article.title }}</p>
+                <div class="flex items-center gap-1 text-sm mb-1">
+                    <span class="text-[#006621]">les-creas-delf.fr › blog › {{ article.slug }}</span>
+                    <span class="text-gray-400">▼</span>
+                </div>
+                <p class="text-[#545454] text-sm line-clamp-2">
+                    {{ article.excerpt ?? article.getExcerptOrGenerate(160) }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{{ end }}

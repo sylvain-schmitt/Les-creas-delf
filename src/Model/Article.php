@@ -13,9 +13,49 @@ class Article extends Model
     protected static ?string $table = 'articles';
     protected static ?string $primaryKey = 'id';
 
-    // Source field for slug generation
-    protected string $slugSource = 'title';
+    // Source field for slug generation (constant to avoid DB persistence)
+    protected const SLUG_SOURCE = 'title';
 
+    /**
+     * Get the slug source field (for HasSlug trait)
+     */
+    protected function getSlugSource(): string
+    {
+        return self::SLUG_SOURCE;
+    }
+
+    /**
+     * Get an attribute by name (required by HasSlug trait)
+     */
+    public function getAttribute(string $key): mixed
+    {
+        return $this->$key ?? null;
+    }
+
+    /**
+     * Set an attribute by name (required by HasSlug trait)
+     */
+    public function setAttribute(string $key, mixed $value): self
+    {
+        $this->$key = $value;
+        return $this;
+    }
+
+    /**
+     * Override findBySlug to ensure proper return type
+     */
+    public static function findBySlug(string $slug): ?self
+    {
+        $result = static::where('slug', '=', $slug)->first();
+
+        if (is_array($result)) {
+            return new self($result);
+        }
+
+        return $result instanceof self ? $result : null;
+    }
+
+    // Propriétés privées (pattern User)
     private ?int $id = null;
     private ?string $title = null;
     private ?string $slug = null;
@@ -94,12 +134,12 @@ class Article extends Model
 
     public function getStatus(): string
     {
-        return $this->status;
+        return $this->status ?? 'draft';
     }
 
     public function getStatusEnum(): ArticleStatus
     {
-        return ArticleStatus::from($this->status);
+        return ArticleStatus::from($this->status ?? 'draft');
     }
 
     public function getPublishedAt(): ?string
@@ -222,6 +262,34 @@ class Article extends Model
     public function isArchived(): bool
     {
         return $this->status === ArticleStatus::ARCHIVED->value;
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // MAGIC METHODS (Pour compatibilité Twig/Templates)
+    // ─────────────────────────────────────────────────────────────
+
+    public function __get(string $name): mixed
+    {
+        // snake_case -> function getSnakeCase() ? No.
+        // Property title -> getTitle()
+        // Property category_id -> getCategoryId()
+
+        // Convert snake_case to PascalCase
+        $pascal = str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
+        $getter = 'get' . $pascal;
+
+        if (method_exists($this, $getter)) {
+            return $this->$getter();
+        }
+
+        // Fallback or explicit check
+        if (property_exists($this, $name)) {
+            return $this->$name; // Will fail if private and accessed from outside, but valid inside __get? No, __get is caller context? No __get is in class.
+            // But valid only if __get handles it.
+            // Actually simply calling getter is best.
+        }
+
+        return null;
     }
 
     // ─────────────────────────────────────────────────────────────

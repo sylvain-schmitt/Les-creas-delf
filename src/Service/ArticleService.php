@@ -13,8 +13,8 @@ class ArticleService
      */
     public function publish(Article $article): void
     {
-        $article->status = ArticleStatus::PUBLISHED->value;
-        $article->published_at = date('Y-m-d H:i:s');
+        $article->setStatus(ArticleStatus::PUBLISHED->value);
+        $article->setPublishedAt(new \DateTime());
         $article->save();
     }
 
@@ -23,8 +23,8 @@ class ArticleService
      */
     public function unpublish(Article $article): void
     {
-        $article->status = ArticleStatus::DRAFT->value;
-        $article->published_at = null;
+        $article->setStatus(ArticleStatus::DRAFT->value);
+        $article->setPublishedAt(null);
         $article->save();
     }
 
@@ -33,7 +33,7 @@ class ArticleService
      */
     public function archive(Article $article): void
     {
-        $article->status = ArticleStatus::ARCHIVED->value;
+        $article->setStatus(ArticleStatus::ARCHIVED->value);
         $article->save();
     }
 
@@ -61,20 +61,41 @@ class ArticleService
     public function create(array $data, int $userId): Article
     {
         $article = new Article();
-        $article->title = $data['title'];
-        $article->excerpt = $data['excerpt'] ?? null;
-        $article->content = $data['content'] ?? null;
-        $article->category_id = $data['category_id'] ?? null;
-        $article->featured_image_id = $data['featured_image_id'] ?? null;
-        $article->user_id = $userId;
-        $article->status = ArticleStatus::DRAFT->value;
-        $article->created_at = date('Y-m-d H:i:s');
-        $article->updated_at = date('Y-m-d H:i:s');
+
+        $article->setTitle($data['title'] ?? null);
+        $article->setContent($data['content'] ?? null);
+
+        // Auto-generate excerpt if not provided
+        $excerpt = $data['excerpt'] ?? null;
+        if (empty($excerpt) && !empty($data['content'])) {
+            $excerpt = \Ogan\Util\Text::excerpt($data['content'], 150);
+        }
+        $article->setExcerpt($excerpt);
+
+        // Convertir les chaînes vides en null pour les int nullable
+        $categoryId = !empty($data['category_id']) ? (int) $data['category_id'] : null;
+        $featuredImageId = !empty($data['featured_image_id']) ? (int) $data['featured_image_id'] : null;
+
+        $article->setCategoryId($categoryId);
+        $article->setFeaturedImageId($featuredImageId);
+        $article->setUserId($userId);
+        $article->setStatus($data['status'] ?? ArticleStatus::DRAFT->value);
+        $article->setCreatedAt(new \DateTime());
+        $article->setUpdatedAt(new \DateTime());
 
         // Generate slug
         $article->generateUniqueSlug();
 
-        $article->save();
+        // Create or update
+        if ($article->getId()) {
+            $article->save();
+        } else {
+            $id = $article->save();
+            // Model::save() returns the ID for inserts, fix for redirect missing ID
+            if ($id) {
+                $article->setId((int)$id);
+            }
+        }
 
         // Sync tags if provided
         if (!empty($data['tags'])) {
@@ -90,35 +111,40 @@ class ArticleService
     public function update(Article $article, array $data): Article
     {
         if (isset($data['title'])) {
-            $article->title = $data['title'];
-            // Regenerate slug if title changed
+            $article->setTitle($data['title']);
+            // Regenerate slug if title changed (implied by setTitle? No, separate logic usually)
             $article->regenerateSlug();
         }
 
         if (array_key_exists('excerpt', $data)) {
-            $article->excerpt = $data['excerpt'];
+            $article->setExcerpt($data['excerpt']);
         }
 
         if (array_key_exists('content', $data)) {
-            $article->content = $data['content'];
-        }
+            $article->setContent($data['content']);
 
-        if (array_key_exists('category_id', $data)) {
-            $article->category_id = $data['category_id'];
-        }
-
-        if (array_key_exists('featured_image_id', $data)) {
-            $article->featured_image_id = $data['featured_image_id'];
-        }
-
-        if (isset($data['status'])) {
-            $article->status = $data['status'];
-            if ($data['status'] === ArticleStatus::PUBLISHED->value && !$article->published_at) {
-                $article->published_at = date('Y-m-d H:i:s');
+            // Auto-update excerpt if not provided in data
+            if (empty($data['excerpt'])) {
+                $article->setExcerpt(\Ogan\Util\Text::excerpt($data['content'], 150));
             }
         }
 
-        $article->updated_at = date('Y-m-d H:i:s');
+        if (array_key_exists('category_id', $data)) {
+            $article->setCategoryId((int)$data['category_id']);
+        }
+
+        if (array_key_exists('featured_image_id', $data)) {
+            $article->setFeaturedImageId((int)$data['featured_image_id']);
+        }
+
+        if (isset($data['status'])) {
+            $article->setStatus($data['status']);
+            if ($data['status'] === ArticleStatus::PUBLISHED->value && !$article->getPublishedAt()) {
+                $article->setPublishedAt(new \DateTime());
+            }
+        }
+
+        $article->setUpdatedAt(new \DateTime());
         $article->save();
 
         // Sync tags if provided

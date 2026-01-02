@@ -75,9 +75,13 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', methods: ['GET', 'POST'], name: 'login')]
     public function login()
     {
-        if ($this->authenticator->isLoggedIn($this->session)) {
+       if ($this->authenticator->isLoggedIn($this->session)) {
             $user = $this->authenticator->getUser($this->session);
-            return $this->redirect($this->getLoginRedirectUrl($user));
+            if ($user) {
+                return $this->redirect($this->getLoginRedirectUrl($user));
+            }
+            // Session active mais utilisateur introuvable (supprimé ?) -> Logout propre
+            $this->authenticator->logout($this->session);
         }
 
         $form = $this->formFactory->create(LoginFormType::class, [

@@ -52,6 +52,15 @@ class ArticleFormType extends AbstractType
                 'attr' => [
                     'rows' => 15
                 ]
+
+            ])
+            ->add('featured_image_id', TextType::class, [
+                'label' => 'ID Image mise en avant',
+                'required' => false,
+                'attr' => [
+                    'class' => 'w-full px-4 py-3 border border-default rounded-xl bg-card text-foreground focus:ring-2 focus:ring-primary focus:border-primary transition-all',
+                    'placeholder' => 'ID de l\'image (optionnel)'
+                ]
             ])
             ->add('category_id', SelectType::class, [
                 'label' => 'Catégorie',
@@ -70,7 +79,7 @@ class ArticleFormType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Enregistrer',
-                'attr' => ['class' => 'w-full btn-primary py-3']
+                'attr' => ['class' => 'btn-primary px-6 py-3']
             ]);
     }
 }
