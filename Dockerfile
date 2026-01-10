@@ -30,8 +30,11 @@ WORKDIR /var/www/html
 COPY . .
 
 # Création des dossiers var et permissions (style user)
-RUN mkdir -p var/cache var/logs public/uploads \
-    && chmod -R 777 var/ public/
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["php-fpm"]
 
 # Installation des dépendances PHP
 RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction \
