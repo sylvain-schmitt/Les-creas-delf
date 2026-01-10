@@ -35,14 +35,14 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interactio
     && composer dump-autoload --optimize
 
 # ===== BUILDS D'ASSETS OGAN =====
-# 1. Télécharge le binaire Tailwind
-RUN php bin/console tailwind:init
+# 1. Télécharge le binaire Tailwind (avec mémoire illimitée pour le téléchargement)
+RUN php -d memory_limit=-1 bin/console tailwind:init
 # 2. Compile le CSS en mode prod
-RUN php bin/console tailwind:build --minify
+RUN php -d memory_limit=-1 bin/console tailwind:build --minify
 # 3. Installe les assets JS
-RUN php bin/console assets:install
+RUN php -d memory_limit=-1 bin/console assets:install
 # 4. Compile les routes
-RUN php bin/console cache:routes
+RUN php -d memory_limit=-1 bin/console cache:routes
 
 # Configuration Opcache
 RUN echo "opcache.enable=1\n\
