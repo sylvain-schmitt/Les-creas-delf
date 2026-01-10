@@ -23,6 +23,10 @@ import SidebarController from './controllers/sidebar_controller.js';
 import ScrollRevealController from './controllers/scroll_reveal_controller.js';
 import NavActiveController from './controllers/nav_active_controller.js';
 import ConfirmModalController from './controllers/confirm_modal_controller.js';
+import MediaPickerController from './controllers/media_picker_controller.js';
+import ClipboardController from './controllers/clipboard_controller.js';
+import ModalController from './controllers/modal_controller.js';
+import SearchBarController from './controllers/search-bar_controller.js';
 
 // ─────────────────────────────────────────────────────────────────────────
 // Initialisation de l'application
@@ -36,12 +40,10 @@ app.register('sidebar', SidebarController);
 app.register('scroll-reveal', ScrollRevealController);
 app.register('nav-active', NavActiveController);
 app.register('confirm-modal', ConfirmModalController);
-
-// ─────────────────────────────────────────────────────────────────────────
-// Ajoutez vos contrôleurs personnalisés ci-dessous
-// ─────────────────────────────────────────────────────────────────────────
-// import MonController from './controllers/mon_controller.js';
-// app.register('mon', MonController);
+app.register('media-picker', MediaPickerController);
+app.register('clipboard', ClipboardController);
+app.register('modal', ModalController);
+app.register('search-bar', SearchBarController);
 
 // ─────────────────────────────────────────────────────────────────────────
 // Export pour utilisation avancée

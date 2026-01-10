@@ -55,9 +55,19 @@
                     </div>
                 </div>
 
+                <!-- Tags -->
+                <div>
+                    {{ form.tags }}
+                </div>
+
                 <!-- Featured Image -->
                 <div>
-                     {{ form.featured_image_id }}
+                    {{ component('admin/media/_picker_field', [
+                        'name' => 'featured_image_id',
+                        'value' => article.getFeaturedImageId() ?? '',
+                        'currentImage' => article.getFeaturedImage() ?? null,
+                        'label' => 'Image mise en avant'
+                    ]) }}
                 </div>
 
                 <!-- Contenu WYSIWYG -->

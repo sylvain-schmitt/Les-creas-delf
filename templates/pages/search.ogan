@@ -1,0 +1,78 @@
+{{ extend('layouts/base.ogan') }}
+{{ title = 'Recherche | Les Créas d\'Elf' }}
+{{ description = 'Rechercher des articles sur Les Créas d\'Elf' }}
+
+{{ start('body') }}
+
+<section class="py-12 sm:py-16">
+    <div class="blog-container">
+        <!-- Header -->
+        <div class="text-center mb-10" data-controller="scroll-reveal">
+            <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-foreground mb-4">
+                Recherche
+            </h1>
+            <p class="text-muted max-w-xl mx-auto">
+                Trouvez des articles, tutoriels et inspirations créatives
+            </p>
+        </div>
+
+        <!-- Search Form -->
+        <div class="max-w-2xl mx-auto mb-12" data-controller="scroll-reveal">
+            <form action="{{ path('search') }}" method="GET" class="relative">
+                <div class="flex gap-3">
+                    <div class="relative flex-1">
+                        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <input
+                            type="text"
+                            name="q"
+                            value="{{ query }}"
+                            placeholder="Rechercher un article..."
+                            class="w-full pl-12 pr-4 py-3.5 rounded-xl border border-default bg-card text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-muted"
+                            autofocus
+                        >
+                    </div>
+                    <button type="submit" class="btn-primary shrink-0">
+                        Rechercher
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Results -->
+        {% if query %}
+            <div class="mb-6 text-center" data-controller="scroll-reveal">
+                {% if resultsCount > 0 %}
+                    <p class="text-muted">
+                        <span class="font-semibold text-foreground">{{ resultsCount }}</span> résultat{% if resultsCount > 1 %}s{% endif %} pour
+                        "<span class="text-primary font-medium">{{ query }}</span>"
+                    </p>
+                {% endif %}
+            </div>
+
+            <div id="search-results-container">
+                {{ component('pages/search/_results_list', ['results' => results]) }}
+            </div>
+        {% else %}
+            <!-- Empty search state -->
+            <div class="text-center py-12 max-w-md mx-auto" data-controller="scroll-reveal">
+                <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary-10 to-secondary-10 flex items-center justify-center">
+                    <svg class="w-10 h-10 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                </div>
+                <h3 class="font-serif text-xl font-semibold text-foreground mb-2">
+                    Commencez votre recherche
+                </h3>
+                <p class="text-muted">
+                    Entrez un mot-clé pour trouver des articles sur vos sujets créatifs préférés.
+                </p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+{{ end }}

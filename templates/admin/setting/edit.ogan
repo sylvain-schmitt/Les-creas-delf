@@ -1,0 +1,27 @@
+{{ extend('layouts/admin.ogan') }}
+
+{{ start('content') }}
+<div class="max-w-2xl mx-auto" data-controller="scroll-reveal">
+    <!-- Header -->
+    <div class="mb-8">
+        <a href="{{ path('admin_setting_index') }}" hx-boost="false" class="inline-flex items-center text-muted hover:text-primary transition-colors mb-4">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Retour aux paramètres
+        </a>
+        <h1 class="font-serif text-2xl font-semibold text-foreground">{{ groupLabel }}</h1>
+        <p class="text-muted">Modifier les paramètres de ce groupe</p>
+    </div>
+
+    <!-- Flash Messages -->
+    <div id="flash-container">
+        {{ component('flashes') }}
+    </div>
+
+    <!-- Form -->
+    <div id="settings-form-container">
+        {{ component('admin/setting/_partials/_form', ['group' => group, 'groupLabel' => groupLabel, 'settingsWithMedia' => settingsWithMedia, 'form' => form, 'imageSettings' => imageSettings, 'formFields' => formFields]) }}
+    </div>
+</div>
+{{ end }}

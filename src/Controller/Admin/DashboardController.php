@@ -9,6 +9,12 @@ use Ogan\Security\Attribute\IsGranted;
 use Ogan\Security\PasswordHasher;
 use App\Security\UserAuthenticator;
 use App\Form\ProfileFormType;
+use App\Model\Article;
+use App\Model\Category;
+use App\Model\Media;
+use App\Model\Comment;
+use App\Enum\ArticleStatus;
+use App\Enum\CommentStatus;
 
 #[IsGranted('ROLE_USER', message: 'Accès réservé aux utilisateurs.')]
 class DashboardController extends AbstractController
@@ -32,18 +38,33 @@ class DashboardController extends AbstractController
 
         $user = $this->getAuth()->getUser($this->session);
 
+        // Récupérer les statistiques réelles
+        $stats = [
+            'articles' => Article::count(),
+            'categories' => Category::count(),
+            'drafts' => Article::where('status', '=', ArticleStatus::DRAFT->value)->count(),
+            'media' => Media::count(),
+            'pendingComments' => Comment::where('status', '=', CommentStatus::PENDING->value)->count(),
+        ];
+
+        // Récupérer les 5 derniers articles
+        $recentArticles = Article::latest()->paginate(5)->items();
+
         // Afficher le dashboard selon le rôle
         if (in_array('ROLE_ADMIN', $user->getRoles())) {
             return $this->render('admin/dashboard/index.ogan', [
                 'user' => $user,
-                'title' => 'Tableau de bord Admin'
+                'title' => 'Tableau de bord Admin',
+                'stats' => $stats,
+                'recentArticles' => $recentArticles
             ]);
         }
 
         // Dashboard utilisateur standard
         return $this->render('admin/dashboard/user.ogan', [
             'user' => $user,
-            'title' => 'Mon espace'
+            'title' => 'Mon espace',
+            'stats' => $stats
         ]);
     }
 

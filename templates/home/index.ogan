@@ -1,6 +1,6 @@
 {{ extend('layouts/base.ogan') }}
 {{ title = 'Les Créas d\'Elf | Créations Artisanales Faites Main en France' }}
-{{ description = 'Les Créas d\'Elf - Boutique de créations artisanales uniques faites main en France. Bougies parfumées, bijoux, poteries et macramé. Découvrez l\'artisanat avec passion.' }}
+{{ description = 'Les Créas d\'Elf - Blog créatif avec articles, tutoriels et inspirations artisanales. Découvrez l\'univers du fait main avec passion.' }}
 
 {{ start('body') }}
 
@@ -54,7 +54,7 @@
 							<path d="M5 12h14M12 5l7 7-7 7"/>
 						</svg>
 					</a>
-					<a href="#contact" class="btn-outline">
+					<a href="{{path('contact')}}" class="btn-outline">
 						Me contacter
 					</a>
 				</div>
@@ -73,9 +73,9 @@
 <!-- Values Section - Enhanced -->
 <section class="blog-container py-20">
 	<div class="text-center mb-12" data-controller="scroll-reveal">
-		<span class="inline-block px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary bg-primary-10 rounded-full mb-4">Pourquoi choisir mes créations</span>
-		<h2 class="font-serif text-3xl sm:text-4xl font-semibold text-foreground mb-3">Mes valeurs</h2>
-		<p class="text-muted max-w-md mx-auto">Ce qui rend chaque création spéciale et unique</p>
+		<span class="inline-block px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary bg-primary-10 rounded-full mb-4">Pourquoi me suivre</span>
+		<h2 class="font-serif text-3xl sm:text-4xl font-semibold text-foreground mb-3">Mon univers</h2>
+		<p class="text-muted max-w-md mx-auto">Ce qui rend ce blog unique et inspirant</p>
 	</div>
 
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -133,11 +133,9 @@
 <!-- Categories -->
 <section class="blog-container py-8" id="articles">
 	<div class="flex flex-wrap justify-center gap-2" data-controller="scroll-reveal">
-		<span class="category-tag">Bougies</span>
-		<span class="category-tag">Bijoux</span>
-		<span class="category-tag">Poterie</span>
-		<span class="category-tag">Macramé</span>
-		<span class="category-tag">Cosmétiques</span>
+		{% for category in categories %}
+		<a href="{{ path('blog') }}?category={{ category.getSlug() }}" class="category-tag hover:bg-primary hover:text-white transition-colors">{{ category.getName() }}</a>
+		{% endfor %}
 	</div>
 </section>
 
@@ -146,78 +144,50 @@
 	<div class="flex items-center justify-between mb-8" data-controller="scroll-reveal">
 		<div>
 			<h2 class="font-serif text-2xl font-semibold text-foreground">
-				Dernières créations
+				Derniers articles
 			</h2>
 			<p class="text-sm mt-1 text-muted">
 				Découvrez mes articles les plus récents
 			</p>
 		</div>
-		<a href="#" class="text-sm font-medium text-muted transition-opacity hover:text-primary">
+		<a href="{{ path('blog') }}" class="text-sm font-medium text-muted transition-opacity hover:text-primary">
 			Voir tout →
 		</a>
 	</div>
 
 	<div class="space-y-4">
-		<!-- Article 1 -->
+		{% if latestArticles|length > 0 %}
+		{% for article in latestArticles %}
 		<article class="craft-card p-6" data-controller="scroll-reveal" data-scroll-reveal-delay="100">
 			<div class="flex items-center gap-3 mb-3">
-				<span class="article-tag bg-primary">Bougies</span>
-				<span class="text-xs text-muted">15 janvier 2024</span>
+				{% if article.getCategory() %}
+				<span class="article-tag bg-primary">{{ article.getCategory().getName() }}</span>
+				{% endif %}
+				<span class="text-xs text-muted">{{ article.getFormattedPublishedAt() }}</span>
 				<span class="text-xs text-muted">•</span>
-				<span class="text-xs text-muted">4 min de lecture</span>
+				<span class="text-xs text-muted">{{ article.getReadingTime() }} min de lecture</span>
 			</div>
 			<h3 class="font-serif text-lg font-semibold mb-2 text-primary">
-				Bougies parfumées artisanales : l'art de la cire naturelle
+				{{ article.getTitle() }}
 			</h3>
 			<p class="text-sm mb-4 leading-relaxed text-muted">
-				Découvrez comment je crée des bougies uniques avec de la cire de soja bio et des huiles essentielles soigneusement sélectionnées pour parfumer délicatement votre intérieur.
+				{{ article.getExcerpt() }}
 			</p>
-			<a href="#" class="text-sm font-medium text-foreground transition-opacity hover:text-primary">
+			<a href="{{ path('blog_show', ['slug' => article.getSlug()]) }}" class="text-sm font-medium text-foreground transition-opacity hover:text-primary">
 				Lire la suite →
 			</a>
 		</article>
-
-		<!-- Article 2 -->
-		<article class="craft-card p-6" data-controller="scroll-reveal" data-scroll-reveal-delay="200">
-			<div class="flex items-center gap-3 mb-3">
-				<span class="article-tag bg-accent">Bijoux</span>
-				<span class="text-xs text-muted">10 janvier 2024</span>
-				<span class="text-xs text-muted">•</span>
-				<span class="text-xs text-muted">5 min de lecture</span>
-			</div>
-			<h3 class="font-serif text-lg font-semibold mb-2 text-primary">
-				Bijoux en perles de rocaille : techniques et inspirations
-			</h3>
-			<p class="text-sm mb-4 leading-relaxed text-muted">
-				Un voyage dans l'univers coloré des perles de rocaille. Découvrez mes techniques préférées pour créer des bijoux délicats et personnalisés.
-			</p>
-			<a href="#" class="text-sm font-medium text-foreground transition-opacity hover:text-primary">
-				Lire la suite →
-			</a>
-		</article>
-
-		<!-- Article 3 -->
-		<article class="craft-card p-6" data-controller="scroll-reveal" data-scroll-reveal-delay="300">
-			<div class="flex items-center gap-3 mb-3">
-				<span class="article-tag bg-craft-terracotta">Poterie</span>
-				<span class="text-xs text-muted">5 janvier 2024</span>
-				<span class="text-xs text-muted">•</span>
-				<span class="text-xs text-muted">6 min de lecture</span>
-			</div>
-			<h3 class="font-serif text-lg font-semibold mb-2 text-primary">
-				Poterie : mes débuts au tour et premières créations
-			</h3>
-			<p class="text-sm mb-4 leading-relaxed text-muted">
-				Retour sur mon apprentissage de la poterie au tour, une discipline exigeante mais tellement gratifiante. Premiers bols, tasses et petits vases...
-			</p>
-			<a href="#" class="text-sm font-medium text-foreground transition-opacity hover:text-primary">
-				Lire la suite →
-			</a>
-		</article>
+		{% endfor %}
+		{% else %}
+		<div class="craft-card p-8 text-center" data-controller="scroll-reveal">
+			<p class="text-muted">Aucun article publié pour le moment.</p>
+			<p class="text-sm text-muted mt-2">Revenez bientôt pour découvrir de nouveaux contenus !</p>
+		</div>
+		{% endif %}
 	</div>
 </section>
 
-<!-- Commandes personnalisées CTA -->
+<!-- Contact CTA -->
 <section id="contact" class="relative overflow-hidden">
 	<!-- Background gradient -->
 	<div class="absolute inset-0 bg-gradient-cta"></div>
@@ -228,28 +198,24 @@
 
 	<div class="relative blog-container py-20 sm:py-24">
 		<div class="max-w-3xl mx-auto text-center" data-controller="scroll-reveal">
-			<!-- Badge -->
 			<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8" style="background: rgba(255,255,255,0.15); color: white;">
-				<!-- Lucide Palette icon -->
+				<!-- Lucide Mail icon -->
 				<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-					<circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
-					<circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
-					<circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
-					<circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
-					<path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2Z"/>
+					<rect width="20" height="16" x="2" y="4" rx="2"/>
+					<path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
 				</svg>
-				<span>Création sur-mesure</span>
+				<span>Restons en contact</span>
 			</div>
 
 			<!-- Title -->
 			<h2 class="font-handwriting text-4xl sm:text-5xl font-semibold text-white mb-6">
-				Envie d'une création unique ?
+				Envie d'échanger ?
 			</h2>
 
 			<!-- Description -->
 			<p class="text-lg text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
-				Vous avez une idée en tête, un cadeau personnalisé à offrir ou simplement envie d'une pièce qui vous ressemble ?
-				Contactez-moi pour discuter de votre projet et créer ensemble quelque chose d'unique.
+				Une question, une suggestion d'article, ou simplement envie de discuter création ?
+				N'hésitez pas à me contacter, je serai ravie d'échanger avec vous.
 			</p>
 
 			<!-- Features -->
@@ -260,29 +226,31 @@
 							<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
 						</svg>
 					</div>
-					<span class="text-sm font-medium">Fait avec amour</span>
+					<span class="text-sm font-medium">Passion créative</span>
 				</div>
 				<div class="flex items-center gap-3 text-white/70">
 					<div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
 						<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+							<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
 						</svg>
 					</div>
-					<span class="text-sm font-medium">Matériaux de qualité</span>
+					<span class="text-sm font-medium">Réponse rapide</span>
 				</div>
 				<div class="flex items-center gap-3 text-white/70">
 					<div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
 						<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<circle cx="12" cy="12" r="10"/>
-							<polyline points="12 6 12 12 16 14"/>
+							<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+							<circle cx="9" cy="7" r="4"/>
+							<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+							<path d="M16 3.13a4 4 0 0 1 0 7.75"/>
 						</svg>
 					</div>
-					<span class="text-sm font-medium">Délais respectés</span>
+					<span class="text-sm font-medium">Communauté bienveillante</span>
 				</div>
 			</div>
 
 			<!-- CTA Button -->
-			<a href="mailto:contact@lescreasdelf.fr" class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-base font-semibold bg-white text-primary hover:bg-white/90 transition-all shadow-lg hover:shadow-xl group">
+			<a href="{{ path('contact') }}" class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-base font-semibold bg-white text-primary hover:bg-white/90 transition-all shadow-lg hover:shadow-xl group">
 				<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 					<rect width="20" height="16" x="2" y="4" rx="2"/>
 					<path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>

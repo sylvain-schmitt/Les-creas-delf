@@ -1,0 +1,79 @@
+{# Partial Commentaires #}
+
+<div id="comments-section" class="max-w-4xl mx-auto py-12 border-t border-default" data-controller="scroll-reveal">
+    <h3 class="font-serif text-2xl font-semibold mb-8">
+        {{ comments.total() }} Commentaire(s)
+    </h3>
+
+    <!-- Liste des commentaires -->
+    <div class="space-y-8 mb-12">
+        {% for comment in comments %}
+        <div class="flex gap-4">
+            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-primary-10 flex items-center justify-center text-primary font-bold text-lg">
+                {{ strtoupper(substr(comment.getAuthorName(), 0, 1)) }}
+            </div>
+            <div class="flex-grow">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="font-semibold text-foreground">{{ comment.getAuthorName() }}</span>
+                    <span class="text-xs text-muted">• {{ comment.getFormattedCreatedAt() }}</span>
+                </div>
+                <div class="prose prose-sm text-muted">
+                    <p>{{! nl2br(htmlspecialchars(comment.getContent())) }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% if comments.total() == 0 %}
+        <p class="text-muted italic">Soyez le premier à commenter cet article !</p>
+        {% endif %}
+
+        {# Pagination #}
+        {% if comments.total() > 0 and comments.hasPages() %}
+        <div class="mt-8">
+            {{ comments.linksHtmx('#comments-section')|raw }}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Formulaire -->
+    <div class="bg-secondary/30 rounded-2xl p-6 sm:p-8">
+        <h4 class="font-bold text-lg mb-4">Laisser un commentaire</h4>
+
+
+{# OOB Flashes #}
+{{ component('components/flashes.ogan', ['oob' => true]) }}
+
+        <div id="comment-form-container">
+            <!-- Le formulaire sera rendu ici -->
+            <form method="POST" action="{{ path('blog_show', ['slug' => article.getSlug()]) }}"
+                  hx-post="{{ path('blog_show', ['slug' => article.getSlug()]) }}"
+                  hx-target="#comments-section"
+                  hx-swap="outerHTML"
+                  hx-select="#comments-section">
+
+                {{ csrf_input() }}
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        {{ commentForm.author_name.label }}
+                        {{ commentForm.author_name.widget }}
+                        {{ commentForm.author_name.errors }}
+                    </div>
+                    <div>
+                        {{ commentForm.author_email.label }}
+                        {{ commentForm.author_email.widget }}
+                        {{ commentForm.author_email.errors }}
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    {{ commentForm.content.label }}
+                    {{ commentForm.content.widget }}
+                    {{ commentForm.content.errors }}
+                </div>
+                {{ commentForm.submit }}
+            </form>
+        </div>
+    </div>
+</div>

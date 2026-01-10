@@ -50,7 +50,9 @@ class ArticleController extends AbstractController
     #[Route(path: '/admin/articles', methods: ['GET'], name: 'admin_article_index')]
     public function index(): Response
     {
-        $articles = Article::paginate(15);
+        // Récupère les articles triés par date de création (plus récent d'abord)
+        $articles = Article::latest()->paginate(10);
+
         $categories = $this->categoryRepository->findAll();
 
         // Requête HTMX : retourner uniquement le partial (sauf si c'est une navigation boostée)
@@ -140,10 +142,12 @@ class ArticleController extends AbstractController
         }
 
         $author = $article->getUserId() ? $this->userRepository->find($article->getUserId()) : null;
+        $tags = $article->getTags();
 
         return $this->render('admin/article/show.ogan', [
             'article' => $article,
-            'author' => $author
+            'author' => $author,
+            'tags' => $tags
         ]);
     }
 
@@ -303,9 +307,16 @@ class ArticleController extends AbstractController
 
         // HTMX : retourner une réponse vide (la ligne disparaît via outerHTML swap)
         if (HtmxHelper::isHtmxRequest()) {
-            return $this->render('admin/article/_partials/_deleted.ogan', [
+            $response = $this->render('admin/_partials/_deleted.ogan', [
                 'showFlashOob' => true
             ]);
+
+            // S'il n'y a plus d'articles, déclencher un rechargement de la liste
+            if (Article::count() === 0) {
+                $response->setHeader('HX-Trigger', 'reloadArticlesList');
+            }
+
+            return $response;
         }
 
         return $this->redirect('/admin/articles');

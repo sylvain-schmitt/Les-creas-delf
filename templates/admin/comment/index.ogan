@@ -12,111 +12,13 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            En attente ({{ pendingCount }})
+            En attente (<span id="admin-pending-count">{{ pendingCount }}</span>)
         </a>
     </div>
 
-    <!-- Flash Messages -->
-    {{ component('flashes') }}
 
-    <!-- Comments Table -->
-    <div class="craft-card overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-muted/10">
-                    <tr>
-                        <th class="px-6 py-4 text-left text-sm font-medium text-muted">Auteur</th>
-                        <th class="px-6 py-4 text-left text-sm font-medium text-muted">Commentaire</th>
-                        <th class="px-6 py-4 text-left text-sm font-medium text-muted">Statut</th>
-                        <th class="px-6 py-4 text-left text-sm font-medium text-muted">Date</th>
-                        <th class="px-6 py-4 text-right text-sm font-medium text-muted">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-default">
-                    {% if comments|length > 0 %}
-                        {% for comment in comments %}
-                        <tr class="hover:bg-muted/5 transition-colors">
-                            <td class="px-6 py-4">
-                                <div>
-                                    <span class="font-medium text-foreground">{{ comment.author_name ?? 'Utilisateur' }}</span>
-                                    {% if comment.author_email %}
-                                        <p class="text-sm text-muted">{{ comment.author_email }}</p>
-                                    {% endif %}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <p class="text-foreground max-w-md">{{ comment.content|truncate(100) }}</p>
-                            </td>
-                            <td class="px-6 py-4">
-                                {% if comment.status == 'approved' %}
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                        Approuvé
-                                    </span>
-                                {% elseif comment.status == 'pending' %}
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                        En attente
-                                    </span>
-                                {% else %}
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                        Rejeté
-                                    </span>
-                                {% endif %}
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="text-sm text-muted">
-                                    {{ comment.created_at|date('d/m/Y H:i') }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    {% if comment.status == 'pending' %}
-                                    <form action="{{ path('admin_comment_approve', ['id' => comment.id]) }}" method="POST" class="inline">
-                                        <button type="submit"
-                                                class="p-2 text-muted hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                                                title="Approuver">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                            </svg>
-                                        </button>
-                                    </form>
-                                    <form action="{{ path('admin_comment_reject', ['id' => comment.id]) }}" method="POST" class="inline">
-                                        <button type="submit"
-                                                class="p-2 text-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                                title="Rejeter">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                            </svg>
-                                        </button>
-                                    </form>
-                                    {% endif %}
-                                    <form action="{{ path('admin_comment_delete', ['id' => comment.id]) }}" method="POST" class="inline"
-                                          onsubmit="return confirm('Supprimer ce commentaire ?')">
-                                        <button type="submit"
-                                                class="p-2 text-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                                title="Supprimer">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                            </svg>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="5" class="px-6 py-12 text-center text-muted">
-                                <svg class="w-12 h-12 mx-auto mb-4 text-muted/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                </svg>
-                                <p class="font-medium">Aucun commentaire</p>
-                                <p class="text-sm mt-1">Les commentaires de vos articles apparaîtront ici.</p>
-                            </td>
-                        </tr>
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+
+    <!-- Comments List -->
+    {{ component('admin/comment/_partials/_list', ['comments' => comments]) }}
 </div>
 {{ end }}

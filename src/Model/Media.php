@@ -73,7 +73,31 @@ class Media extends Model
      */
     public function getUrl(): string
     {
-        return '/uploads/' . $this->path;
+        return '/uploads/' . $this->path . '/original.webp';
+    }
+
+    /**
+     * Get thumbnail URL
+     */
+    public function getThumbnailUrl(): string
+    {
+        return '/uploads/' . $this->path . '/original_thumbnail.webp';
+    }
+
+    /**
+     * Get medium size URL
+     */
+    public function getMediumUrl(): string
+    {
+        return '/uploads/' . $this->path . '/original_medium.webp';
+    }
+
+    /**
+     * Get large size URL
+     */
+    public function getLargeUrl(): string
+    {
+        return '/uploads/' . $this->path . '/original_large.webp';
     }
 
     /**

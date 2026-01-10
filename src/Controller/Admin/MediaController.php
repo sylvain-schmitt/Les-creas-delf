@@ -7,13 +7,21 @@ use Ogan\Http\Response;
 use Ogan\Router\Attributes\Route;
 use Ogan\Security\Attribute\IsGranted;
 use App\Model\Media;
+use App\Service\MediaService;
 use App\Security\UserAuthenticator;
-use Ogan\Database\Database;
+use Ogan\View\Helper\HtmxHelper;
+
 
 #[IsGranted('ROLE_ADMIN', message: 'Accès réservé aux administrateurs.')]
 class MediaController extends AbstractController
 {
+    private MediaService $mediaService;
     private ?UserAuthenticator $auth = null;
+
+    public function __construct()
+    {
+        $this->mediaService = new MediaService();
+    }
 
     private function getAuth(): UserAuthenticator
     {
@@ -26,10 +34,15 @@ class MediaController extends AbstractController
     #[Route(path: '/admin/media', methods: ['GET'], name: 'admin_media_index')]
     public function index(): Response
     {
-        $pdo = Database::getConnection();
-        $stmt = $pdo->query("SELECT * FROM media ORDER BY created_at DESC");
-        $mediaItems = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        $media = array_map(fn($row) => new Media($row), $mediaItems);
+        $media = Media::latest()->paginate(15);
+
+        // Requête HTMX : retourner uniquement le partial (sauf si c'est une navigation boostée)
+        if (HtmxHelper::isHtmxRequest() && !$this->request->getHeader('HX-Boosted')) {
+            return $this->render('admin/media/_partials/_list.ogan', [
+                'media' => $media,
+                'showFlashOob' => true // Toujours inclure les flashs pour les mises à jour HTMX
+            ]);
+        }
 
         return $this->render('admin/media/index.ogan', [
             'title' => 'Médiathèque',
@@ -42,61 +55,37 @@ class MediaController extends AbstractController
     {
         $user = $this->getAuth()->getUser($this->session);
 
-        if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
-            $this->addFlash('error', 'Erreur lors de l\'upload du fichier.');
+        if (!isset($_FILES['file'])) {
+            $this->addFlash('error', 'Aucun fichier sélectionné.');
+
+            if (HtmxHelper::isHtmxRequest()) {
+                return $this->index();
+            }
+
             return $this->redirect('/admin/media');
         }
 
-        $file = $_FILES['file'];
+        $alt = $this->request->post('alt');
+        $result = $this->mediaService->upload($_FILES['file'], $user->getId(), $alt);
 
-        // Validate file type (images only)
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        $finfo = new \finfo(FILEINFO_MIME_TYPE);
-        $mimeType = $finfo->file($file['tmp_name']);
-
-        if (!in_array($mimeType, $allowedTypes)) {
-            $this->addFlash('error', 'Seules les images (JPEG, PNG, GIF, WebP) sont acceptées.');
-            return $this->redirect('/admin/media');
+        if (!$result) {
+            $this->addFlash('error', 'Erreur lors de l\'upload. Vérifiez le format (JPEG, PNG, GIF, WebP) et la taille (max 5 Mo).');
+        } else {
+            $this->addFlash('success', 'Image uploadée avec succès.');
         }
 
-        // Validate file size (max 5MB)
-        if ($file['size'] > 5 * 1024 * 1024) {
-            $this->addFlash('error', 'Le fichier est trop volumineux (max 5 Mo).');
-            return $this->redirect('/admin/media');
+        // HTMX: Réutiliser la méthode index() et ajouter le trigger
+        if (HtmxHelper::isHtmxRequest()) {
+            $response = $this->index();
+
+            // Uniquement si succès
+            if ($result) {
+                $response->setHeader('HX-Trigger', 'closeUploadModal');
+            }
+
+            return $response;
         }
 
-        // Generate unique filename
-        $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $filename = uniqid('media_') . '.' . strtolower($extension);
-
-        // Create upload directory if not exists
-        $uploadDir = dirname(__DIR__, 3) . '/public/uploads/media/' . date('Y/m');
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-
-        $relativePath = 'media/' . date('Y/m') . '/' . $filename;
-        $absolutePath = $uploadDir . '/' . $filename;
-
-        // Move uploaded file
-        if (!move_uploaded_file($file['tmp_name'], $absolutePath)) {
-            $this->addFlash('error', 'Erreur lors de l\'enregistrement du fichier.');
-            return $this->redirect('/admin/media');
-        }
-
-        // Save to database
-        $media = new Media();
-        $media->filename = $filename;
-        $media->original_name = $file['name'];
-        $media->path = $relativePath;
-        $media->mime_type = $mimeType;
-        $media->size = $file['size'];
-        $media->alt = $this->request->post('alt') ?? pathinfo($file['name'], PATHINFO_FILENAME);
-        $media->user_id = $user->getId();
-        $media->created_at = date('Y-m-d H:i:s');
-        $media->save();
-
-        $this->addFlash('success', 'Image uploadée avec succès.');
         return $this->redirect('/admin/media');
     }
 
@@ -107,18 +96,29 @@ class MediaController extends AbstractController
 
         if (!$media) {
             $this->addFlash('error', 'Média non trouvé.');
+
+            if (HtmxHelper::isHtmxRequest()) {
+                return $this->render('admin/media/_partials/_deleted.ogan', [
+                    'showFlashOob' => true
+                ]);
+            }
+
             return $this->redirect('/admin/media');
         }
 
-        // Delete file from disk
-        $filePath = dirname(__DIR__, 3) . '/public/uploads/' . $media->path;
-        if (file_exists($filePath)) {
-            unlink($filePath);
+        $this->mediaService->delete($media);
+        $this->addFlash('success', 'Média supprimé avec succès.');
+
+        // HTMX: gestion de l'état vide
+        if (HtmxHelper::isHtmxRequest()) {
+            // Toujours déclencher un rechargement pour recalculer la pagination
+            $response = $this->render('admin/_partials/_deleted.ogan', [
+                'showFlashOob' => true
+            ]);
+            $response->setHeader('HX-Trigger', 'reloadMediaList');
+            return $response;
         }
 
-        $media->delete();
-
-        $this->addFlash('success', 'Média supprimé avec succès.');
         return $this->redirect('/admin/media');
     }
 
@@ -132,9 +132,43 @@ class MediaController extends AbstractController
         }
 
         $alt = $this->request->post('alt');
-        $media->alt = $alt;
+        $media->setAlt($alt);
         $media->save();
 
         return $this->json(['success' => true, 'alt' => $alt]);
+    }
+
+    /**
+     * API endpoint to get all media for picker
+     */
+    #[Route(path: '/admin/api/media', methods: ['GET'], name: 'admin_api_media')]
+    public function apiList(): Response
+    {
+        $media = Media::all();
+
+        $items = array_map(function ($m) {
+            return [
+                'id' => $m->getId(),
+                'url' => $m->getThumbnailUrl(),
+                'originalUrl' => $m->getUrl(),
+                'alt' => $m->getAlt(),
+                'filename' => $m->getOriginalName(),
+            ];
+        }, $media);
+
+        return $this->json($items);
+    }
+
+    /**
+     * Partial for media picker modal
+     */
+    #[Route(path: '/admin/media/picker', methods: ['GET'], name: 'admin_media_picker')]
+    public function picker(): Response
+    {
+        $media = Media::all();
+
+        return $this->render('admin/media/_picker_field.ogan', [
+            'media' => $media
+        ]);
     }
 }

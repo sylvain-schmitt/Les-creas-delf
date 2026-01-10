@@ -149,7 +149,10 @@ class ArticleService
 
         // Sync tags if provided
         if (isset($data['tags'])) {
-            $this->syncTags($article, $data['tags']);
+            $tags = is_string($data['tags']) ? explode(',', $data['tags']) : $data['tags'];
+            // Ensure array and filter empty
+            $tags = array_filter((array) $tags);
+            $this->syncTags($article, $tags);
         }
 
         return $article;

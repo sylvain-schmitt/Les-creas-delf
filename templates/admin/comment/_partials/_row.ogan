@@ -1,0 +1,81 @@
+{# Partial Row - Ligne de commentaire dans le tableau #}
+
+<tr id="comment-{{ comment.getId() }}" class="hover:bg-muted/5 transition-colors">
+    <td class="px-6 py-4">
+        <div>
+            <span class="font-medium text-foreground">{{ comment.getDisplayName() }}</span>
+            {% if comment.getAuthorEmail() %}
+                <p class="text-sm text-muted">{{ comment.getAuthorEmail() }}</p>
+            {% endif %}
+        </div>
+    </td>
+    <td class="px-6 py-4">
+        <p class="text-foreground max-w-md">{{ comment.getContent()|truncate(100) }}</p>
+        {% if comment.article() %}
+        <a href="{{ path('admin_article_show', ['id' => comment.getArticleId()]) }}"
+           class="text-xs text-primary hover:underline mt-1 inline-block">
+            → {{ comment.article().getTitle()|truncate(30) }}
+        </a>
+        {% endif %}
+    </td>
+    <td class="px-6 py-4">
+        {% if comment.isApproved() %}
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                Approuvé
+            </span>
+        {% elseif comment.isPending() %}
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                En attente
+            </span>
+        {% else %}
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                Rejeté
+            </span>
+        {% endif %}
+    </td>
+    <td class="px-6 py-4">
+        <span class="text-sm text-muted">
+            {{ comment.getCreatedAt()|date('d/m/Y H:i') }}
+        </span>
+    </td>
+    <td class="px-6 py-4 text-right">
+        <div class="flex items-center justify-end gap-1">
+            {% if comment.isPending() %}
+            <button type="button"
+                    hx-post="{{ path('admin_comment_approve', ['id' => comment.getId()]) }}"
+                    hx-target="#comment-{{ comment.getId() }}"
+                    hx-swap="outerHTML"
+                    class="p-2 text-muted hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                    title="Approuver">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+            </button>
+            <button type="button"
+                    hx-post="{{ path('admin_comment_reject', ['id' => comment.getId()]) }}"
+                    hx-target="#comment-{{ comment.getId() }}"
+                    hx-swap="outerHTML"
+                    class="p-2 text-muted hover:text-orange-500 hover:bg-orange-50 rounded-lg transition-colors"
+                    title="Rejeter">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            {% endif %}
+            <button type="button"
+                    data-controller="confirm-modal"
+                    data-confirm-modal-title-param="Supprimer ce commentaire ?"
+                    data-confirm-modal-message-param="Cette action est irréversible."
+                    data-confirm-modal-confirm-text-param="Supprimer"
+                    data-confirm-modal-url-param="{{ path('admin_comment_delete', ['id' => comment.getId()]) }}"
+                    data-confirm-modal-method-param="POST"
+                    data-confirm-modal-target-param="#comment-{{ comment.getId() }}"
+                    class="p-2 text-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Supprimer">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+            </button>
+        </div>
+    </td>
+</tr>

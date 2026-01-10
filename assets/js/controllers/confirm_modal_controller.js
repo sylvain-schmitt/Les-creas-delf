@@ -72,18 +72,26 @@ export default class extends Controller {
     open(event) {
         event.preventDefault()
         event.stopPropagation()
-        console.log('Open modal called');
 
         const title = this.element.dataset.confirmModalTitleParam
         const message = this.element.dataset.confirmModalMessageParam
         const url = this.element.dataset.confirmModalUrlParam
         const method = this.element.dataset.confirmModalMethodParam
+        const targetSelector = this.element.dataset.confirmModalTargetParam
 
         this.titleEl.textContent = title || "Confirmer l'action"
         this.messageEl.textContent = message || "Êtes-vous sûr ?"
         this.actionUrl = url
         this.actionMethod = method || 'POST'
-        this.targetElement = this.element.closest('tr')
+
+        // Support custom target selector or fallback to tr/[id^=media-]/[id^=article-]
+        if (targetSelector) {
+            this.targetElement = document.querySelector(targetSelector)
+        } else {
+            this.targetElement = this.element.closest('tr') ||
+                this.element.closest('[id^="media-"]') ||
+                this.element.closest('[id^="article-"]')
+        }
 
         this.modal.classList.remove('hidden')
         document.body.classList.add('overflow-hidden')
@@ -114,6 +122,36 @@ export default class extends Controller {
                     const flashes = doc.getElementById('flashes-container')
                     if (flashes) {
                         document.getElementById('flashes-container').innerHTML = flashes.innerHTML
+                    }
+                }
+
+                // Traiter le header HX-Trigger pour des actions spéciales
+                const hxTrigger = response.headers.get('HX-Trigger')
+                if (hxTrigger) {
+
+                    // Gérer le rechargement de la liste média quand c'est vide
+                    if (hxTrigger === 'reloadMediaList' || hxTrigger.includes('reloadMediaList')) {
+                        // Attendre la fin de l'animation de suppression avant de recharger
+                        setTimeout(() => {
+                            if (typeof htmx !== 'undefined') {
+                                htmx.ajax('GET', '/admin/media', {
+                                    target: '#media-list',
+                                    swap: 'outerHTML'
+                                })
+                            }
+                        }, 350)
+                    }
+
+                    // Gérer le rechargement de la liste articles quand c'est vide
+                    if (hxTrigger === 'reloadArticlesList' || hxTrigger.includes('reloadArticlesList')) {
+                        setTimeout(() => {
+                            if (typeof htmx !== 'undefined') {
+                                htmx.ajax('GET', '/admin/articles', {
+                                    target: '#articles-list',
+                                    swap: 'outerHTML'
+                                })
+                            }
+                        }, 350)
                     }
                 }
             }

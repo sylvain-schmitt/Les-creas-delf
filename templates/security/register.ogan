@@ -1,6 +1,6 @@
 {{ extend('layouts/base.ogan') }}
 {{ title = 'Inscription | Les Créas d\'Elf' }}
-{{ description = 'Créez votre compte Les Créas d\'Elf pour découvrir nos créations artisanales et passer commande facilement.' }}
+{{ description = 'Créez votre compte Les Créas d\'Elf pour accéder aux articles exclusifs et interagir avec la communauté.' }}
 
 {{ start('body') }}
 <div class="min-h-screen flex items-center justify-center relative overflow-hidden">

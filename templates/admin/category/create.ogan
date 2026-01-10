@@ -1,7 +1,7 @@
 {{ extend('layouts/admin.ogan') }}
 
 {{ start('content') }}
-<div class="max-w-2xl mx-auto">
+<div class="max-w-2xl mx-auto" data-controller="scroll-reveal">
     <!-- Header -->
     <div class="mb-8">
         <a href="{{ path('admin_category_index') }}" class="inline-flex items-center text-muted hover:text-primary transition-colors mb-4">
@@ -18,17 +18,27 @@
     {{ component('flashes') }}
 
     <!-- Form -->
-    <div class="craft-card p-6 sm:p-8">
-        {{ form.start|raw }}
+    <div class="craft-card p-6 sm:p-8" data-controller="scroll-reveal" data-scroll-reveal-delay="200">
+        <form method="POST" action="{{ path('admin_category_create') }}" hx-boost="false">
+            {{ form._csrf_token }}
             <div class="space-y-6">
-                {{ form.name|raw }}
-                {{ form.description|raw }}
+                <div>
+                    {{ form.name }}
+                </div>
+                <div>
+                    {{ form.description }}
+                </div>
             </div>
 
             <div class="mt-8 pt-6 border-t border-default">
-                {{ form.submit|raw }}
+                <div class="flex items-center justify-end gap-4">
+                    <a href="{{ path('admin_category_index') }}" class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold rounded-xl border-2 border-default bg-card text-foreground hover:border-primary hover:text-primary transition-all">
+                        Annuler
+                    </a>
+                    {{ form.submit.widget }}
+                </div>
             </div>
-        {{ form.end|raw }}
+        </form>
     </div>
 </div>
 {{ end }}

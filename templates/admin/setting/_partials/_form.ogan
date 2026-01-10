@@ -1,0 +1,61 @@
+{#
+    Partial formulaire des settings
+    Utilise SettingGroupFormType pour générer les champs automatiquement
+
+    Les champs sont affichés par groupe avec des conditions
+#}
+
+<div class="craft-card p-6 sm:p-8" data-controller="scroll-reveal" data-scroll-reveal-delay="200">
+    <form method="POST"
+          action="{{ path('admin_setting_edit', ['group' => group]) }}"
+          hx-boost="false">
+        {{ form._csrf_token }}
+
+        <div class="space-y-6">
+            {# Groupe About #}
+            {% if group == 'about' %}
+                <div>{{ form.about_title }}</div>
+                <div>{{ form.about_subtitle }}</div>
+                <div>{{ form.about_story }}</div>
+            {% endif %}
+
+            {# Groupe Blog #}
+            {% if group == 'blog' %}
+                <div>{{ form.blog_title }}</div>
+                <div>{{ form.blog_subtitle }}</div>
+            {% endif %}
+
+            {# Groupe Contact #}
+            {% if group == 'contact' %}
+                <div>{{ form.contact_title }}</div>
+                <div>{{ form.contact_subtitle }}</div>
+            {% endif %}
+
+            {# Groupe Social #}
+            {% if group == 'social' %}
+                <div>{{ form.social_instagram }}</div>
+                <div>{{ form.social_facebook }}</div>
+            {% endif %}
+
+            {# Afficher les champs image séparément avec le media picker #}
+            {% for item in imageSettings %}
+            <div>
+                {{ component('admin/media/_picker_field', [
+                    'name' => item['setting'].getKey(),
+                    'value' => item['setting'].getValue() ?? '',
+                    'currentImage' => item['currentImage'],
+                    'label' => item['setting'].getLabel()
+                ]) }}
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Submit -->
+        <div class="mt-8 pt-6 border-t border-default">
+            <div class="flex items-center justify-end gap-4">
+                <a href="{{ path('admin_setting_index') }}" hx-boost="false" class="btn-outline px-6 py-3">Annuler</a>
+                {{ form.submit.widget }}
+            </div>
+        </div>
+    </form>
+</div>

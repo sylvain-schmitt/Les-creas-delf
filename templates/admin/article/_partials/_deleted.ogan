@@ -1,8 +1,0 @@
-{#
-    Partial après suppression - Réponse vide avec flash OOB
-    La ligne sera supprimée par hx-swap="outerHTML" avec ce contenu vide.
-#}
-
-{% if showFlashOob ?? false %}
-    {{ component('flashes', ['oob' => true]) }}
-{% endif %}

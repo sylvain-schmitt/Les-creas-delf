@@ -42,6 +42,7 @@ tailwindcss
 
 # Assets compilés
 /public/assets/
+/public/uploads/
 node_modules/
 package-lock.json
 
@@ -49,7 +50,7 @@ package-lock.json
 tailwind.config.js
 
 # Database - Migrations générées localement
-/database/migrations/*.php
+!/database/migrations/*.php
 !/database/migrations/README.md
 /database/seeders/*.php
 

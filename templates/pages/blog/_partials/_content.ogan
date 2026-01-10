@@ -1,0 +1,40 @@
+{# Partial Contenu Blog : Filtres + Articles #}
+
+<!-- Categories Filter -->
+<div class="py-8 bg-secondary border-y border-default">
+    <div class="blog-container">
+        <div class="flex flex-wrap items-center gap-3" data-controller="scroll-reveal">
+            <a
+                href="{{ path('blog') }}"
+                hx-get="{{ path('blog') }}"
+                hx-target="#blog-content"
+                hx-swap="innerHTML"
+                hx-push-url="true"
+                class="filter-btn px-5 py-2.5 rounded-xl font-medium transition-all {% if !currentCategory %}bg-primary text-white{% else %}bg-card border border-default text-foreground hover:border-primary hover:text-primary{% endif %}"
+            >
+                Tous les articles
+            </a>
+            {% for category in categories %}
+            <a
+                href="{{ path('blog') }}?category={{ category.getSlug() }}"
+                hx-get="{{ path('blog') }}?category={{ category.getSlug() }}"
+                hx-target="#blog-content"
+                hx-swap="innerHTML"
+                hx-push-url="true"
+                class="filter-btn px-5 py-2.5 rounded-xl font-medium transition-all {% if currentCategory and currentCategory.getId() == category.getId() %}bg-primary text-white{% else %}bg-card border border-default text-foreground hover:border-primary hover:text-primary{% endif %}"
+            >
+                {{ category.getName() }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Articles Grid -->
+<div class="py-16">
+    <div class="blog-container">
+        <div id="articles-container">
+            {{ component('pages/blog/_partials/_articles_list', ['articles' => articles, 'categories' => categories, 'currentCategory' => currentCategory]) }}
+        </div>
+    </div>
+</div>

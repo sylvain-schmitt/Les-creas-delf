@@ -62,6 +62,19 @@ class ArticleFormType extends AbstractType
                     'placeholder' => 'ID de l\'image (optionnel)'
                 ]
             ])
+            ->add('tags', SelectType::class, [
+                'label' => 'Tags',
+                'required' => false,
+                'multiple' => true,
+                'choices' => array_combine(
+                    array_map(fn($t) => $t->id, $options['tags'] ?? []),
+                    array_map(fn($t) => $t->name, $options['tags'] ?? [])
+                ),
+                'attr' => [
+                    'class' => 'w-full px-4 py-3 border border-default rounded-xl bg-card text-foreground focus:ring-2 focus:ring-primary focus:border-primary transition-all h-32',
+                    'multiple' => 'multiple'
+                ]
+            ])
             ->add('category_id', SelectType::class, [
                 'label' => 'Catégorie',
                 'required' => false,

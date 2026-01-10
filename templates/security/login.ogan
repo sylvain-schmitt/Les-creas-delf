@@ -1,6 +1,6 @@
 {{ extend('layouts/base.ogan') }}
 {{ title = 'Connexion | Les Créas d\'Elf' }}
-{{ description = 'Connectez-vous à votre compte Les Créas d\'Elf pour accéder à vos commandes et gérer votre profil.' }}
+{{ description = 'Connectez-vous à votre compte Les Créas d\'Elf pour accéder à votre espace personnel.' }}
 
 {{ start('body') }}
 <div

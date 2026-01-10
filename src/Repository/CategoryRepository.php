@@ -25,7 +25,17 @@ class CategoryRepository
      */
     public function findBySlug(string $slug): ?Category
     {
-        return Category::findBySlug($slug);
+        // Utilisation directe de PDO pour éviter les problèmes potentiels avec l'ORM
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("SELECT * FROM categories WHERE slug = ? LIMIT 1");
+        $stmt->execute([$slug]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$data) {
+            return null;
+        }
+
+        return new Category($data);
     }
 
     /**

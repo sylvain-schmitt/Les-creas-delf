@@ -1,0 +1,41 @@
+{# Partial List - Catégories avec pagination HTMX #}
+
+<div id="categories-list" data-htmx-paginated hx-boost="false">
+    <div class="craft-card overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-muted/10">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-muted">Nom</th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-muted">Slug</th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-muted">Articles</th>
+                        <th class="px-6 py-4 text-right text-sm font-medium text-muted">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-default">
+                    {% if categories.total() > 0 %}
+                        {% for category in categories %}
+                            {{ component('admin/category/_partials/_row', ['category' => category]) }}
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="px-6 py-12 text-center text-muted">
+                                <svg class="w-12 h-12 mx-auto mb-4 text-muted/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                                </svg>
+                                <p class="font-medium">Aucune catégorie</p>
+                                <p class="text-sm mt-1">Créez votre première catégorie pour organiser vos articles.</p>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% if categories.total() > 0 %}
+    <div class="mt-6">
+        {{ categories.linksHtmx('#categories-list')|raw }}
+    </div>
+    {% endif %}
+</div>

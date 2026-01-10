@@ -27,8 +27,23 @@ class Article extends Model
     /**
      * Get an attribute by name (required by HasSlug trait)
      */
+    /**
+     * Get an attribute by name (required by HasSlug trait)
+     */
     public function getAttribute(string $key): mixed
     {
+        // 1. Try direct property
+        if (property_exists($this, $key)) {
+            return $this->$key;
+        }
+
+        // 2. Try CamelCase getter (category_id -> getCategoryId)
+        $camelKey = str_replace('_', '', ucwords($key, '_'));
+        $getter = 'get' . $camelKey;
+        if (method_exists($this, $getter)) {
+            return $this->$getter();
+        }
+
         return $this->$key ?? null;
     }
 
@@ -37,6 +52,15 @@ class Article extends Model
      */
     public function setAttribute(string $key, mixed $value): self
     {
+        // 1. Try CamelCase setter (category_id -> setCategoryId)
+        $camelKey = str_replace('_', '', ucwords($key, '_'));
+        $setter = 'set' . $camelKey;
+
+        if (method_exists($this, $setter)) {
+            return $this->$setter($value);
+        }
+
+        // 2. Default to dynamic property
         $this->$key = $value;
         return $this;
     }
@@ -145,6 +169,37 @@ class Article extends Model
     public function getPublishedAt(): ?string
     {
         return $this->publishedAt;
+    }
+
+    /**
+     * Get formatted published date in French
+     */
+    public function getFormattedPublishedAt(string $format = 'd F Y'): ?string
+    {
+        if (!$this->publishedAt) {
+            return null;
+        }
+
+        $date = new \DateTime($this->publishedAt);
+
+        // Mois en français
+        $months = [
+            'January' => 'janvier',
+            'February' => 'février',
+            'March' => 'mars',
+            'April' => 'avril',
+            'May' => 'mai',
+            'June' => 'juin',
+            'July' => 'juillet',
+            'August' => 'août',
+            'September' => 'septembre',
+            'October' => 'octobre',
+            'November' => 'novembre',
+            'December' => 'décembre'
+        ];
+
+        $formatted = $date->format($format);
+        return str_replace(array_keys($months), array_values($months), $formatted);
     }
 
     public function getCreatedAt(): ?string
@@ -268,62 +323,40 @@ class Article extends Model
     // MAGIC METHODS (Pour compatibilité Twig/Templates)
     // ─────────────────────────────────────────────────────────────
 
-    public function __get(string $name): mixed
-    {
-        // snake_case -> function getSnakeCase() ? No.
-        // Property title -> getTitle()
-        // Property category_id -> getCategoryId()
 
-        // Convert snake_case to PascalCase
-        $pascal = str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
-        $getter = 'get' . $pascal;
-
-        if (method_exists($this, $getter)) {
-            return $this->$getter();
-        }
-
-        // Fallback or explicit check
-        if (property_exists($this, $name)) {
-            return $this->$name; // Will fail if private and accessed from outside, but valid inside __get? No, __get is caller context? No __get is in class.
-            // But valid only if __get handles it.
-            // Actually simply calling getter is best.
-        }
-
-        return null;
-    }
 
     // ─────────────────────────────────────────────────────────────
     // RELATIONS (ORM style)
     // ─────────────────────────────────────────────────────────────
 
     /**
-     * Get the article's category (ManyToOne)
+     * Get the article's category (ManyToOne) - Relation definition
      */
-    public function getCategory(): \Ogan\Database\Relations\ManyToOne
+    public function categoryRelation(): \Ogan\Database\Relations\ManyToOne
     {
         return $this->manyToOne(Category::class, 'category_id');
     }
 
     /**
-     * Get the article's author (ManyToOne)
+     * Get the article's author (ManyToOne) - Relation definition
      */
-    public function getAuthor(): \Ogan\Database\Relations\ManyToOne
+    public function authorRelation(): \Ogan\Database\Relations\ManyToOne
     {
         return $this->manyToOne(User::class, 'user_id');
     }
 
     /**
-     * Get the featured image (ManyToOne)
+     * Get the featured image (ManyToOne) - Relation definition
      */
-    public function getFeaturedImage(): \Ogan\Database\Relations\ManyToOne
+    public function featuredImageRelation(): \Ogan\Database\Relations\ManyToOne
     {
         return $this->manyToOne(Media::class, 'featured_image_id');
     }
 
     /**
-     * Get all tags for this article (ManyToMany)
+     * Get all tags for this article (ManyToMany) - Relation definition
      */
-    public function getTags(): \Ogan\Database\Relations\ManyToMany
+    public function tagsRelation(): \Ogan\Database\Relations\ManyToMany
     {
         return $this->manyToMany(
             Tag::class,
@@ -334,60 +367,74 @@ class Article extends Model
     }
 
     /**
-     * Get all comments for this article (OneToMany)
+     * Get all comments for this article (OneToMany) - Relation definition
      */
-    public function getComments(): \Ogan\Database\Relations\OneToMany
+    public function commentsRelation(): \Ogan\Database\Relations\OneToMany
     {
         return $this->oneToMany(Comment::class, 'article_id');
     }
 
     // ─────────────────────────────────────────────────────────────
-    // HELPER METHODS
+    // HELPER METHODS (Accessors for Templates/Magic Props)
     // ─────────────────────────────────────────────────────────────
 
     /**
      * Get category instance
      */
-    public function category(): ?Category
+    public function getCategory(): ?Category
     {
-        return $this->getCategory()->getResults();
+        return $this->categoryRelation()->getResults();
     }
 
     /**
      * Get author instance
      */
-    public function author(): ?User
+    public function getAuthor(): ?User
     {
-        return $this->getAuthor()->getResults();
+        return $this->authorRelation()->getResults();
     }
 
     /**
      * Get featured image instance
      */
-    public function featuredImage(): ?Media
+    public function getFeaturedImage(): ?Media
     {
-        return $this->getFeaturedImage()->getResults();
+        return $this->featuredImageRelation()->getResults();
     }
 
     /**
      * Get tags array
      */
-    public function tags(): array
+    public function getTags(): array
     {
-        return $this->getTags()->getResults();
+        return $this->tagsRelation()->getResults();
+    }
+
+    /**
+     * Add a tag to the article
+     */
+    public function addTag(Tag $tag): bool
+    {
+        if (!$this->id) {
+            return false;
+        }
+        return $this->tagsRelation()->attach($tag->getId());
     }
 
     /**
      * Get approved comments
      */
-    public function comments(): array
+    public function getComments(): array
     {
-        return $this->getComments()
+        return $this->commentsRelation()
             ->where('status', '=', 'approved')
             ->orderBy('created_at', 'DESC')
             ->getResults();
     }
 
+    /**
+     * Count approved comments
+     */
     /**
      * Count approved comments
      */
@@ -397,5 +444,13 @@ class Article extends Model
         $stmt = $pdo->prepare("SELECT COUNT(*) FROM comments WHERE article_id = ? AND status = 'approved'");
         $stmt->execute([$this->id]);
         return (int) $stmt->fetchColumn();
+    }
+
+    /**
+     * Public wrapper for protected hydrate method
+     */
+    public static function hydrateResults(array $results): array
+    {
+        return parent::hydrate($results);
     }
 }

@@ -1,0 +1,144 @@
+{#
+    Media Picker Partial - Sélecteur d'image depuis la médiathèque
+    Usage: {% include 'admin/media/_picker_field.ogan' with { name: 'featured_image_id', value: article.featured_image_id, label: 'Image mise en avant' } %}
+#}
+
+<div data-controller="media-picker" class="space-y-2">
+    <label class="block text-sm font-medium text-foreground">{{ label ?? 'Image' }}</label>
+
+    <!-- Input hidden pour stocker l'ID -->
+    <input type="hidden"
+           name="{{ name }}"
+           value="{{ value ?? '' }}"
+           data-media-picker-target="input">
+
+    <!-- Zone de preview -->
+    <div class="relative">
+        <!-- Placeholder (affiché quand pas d'image) -->
+        <div data-media-picker-target="placeholder"
+             class="{% if value %}hidden{% endif %} w-full max-w-md aspect-[3/1] bg-muted/10 border-2 border-dashed border-default rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-primary transition-colors"
+             data-action="click->media-picker#open">
+            <svg class="w-10 h-10 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <span class="text-sm text-muted">Cliquez pour choisir une image</span>
+        </div>
+
+        <!-- Preview (affiché quand image sélectionnée) -->
+        <div data-media-picker-target="preview"
+             class="{% if !value %}hidden{% endif %} relative w-full max-w-md aspect-[3/1] bg-muted/10 rounded-xl overflow-hidden group">
+            <img data-media-picker-target="previewImage"
+                 src="{% if currentImage %}{{ currentImage.getUrl() }}{% endif %}"
+                 alt=""
+                 class="w-full h-full object-cover">
+
+            <!-- Actions overlay -->
+            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                <button type="button"
+                        data-action="click->media-picker#open"
+                        class="p-2 bg-white/20 hover:bg-white/30 rounded-lg text-white transition-colors"
+                        title="Changer l'image">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </button>
+                <button type="button"
+                        data-action="click->media-picker#remove"
+                        class="p-2 bg-red-500/80 hover:bg-red-500 rounded-lg text-white transition-colors"
+                        title="Supprimer l'image">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de sélection -->
+    <div data-media-picker-target="modal"
+         class="hidden fixed inset-0 z-50 overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <!-- Backdrop -->
+            <div class="fixed inset-0 bg-black/50" data-action="click->media-picker#close"></div>
+
+            <!-- Modal content -->
+            <div class="relative bg-card rounded-2xl shadow-xl max-w-3xl w-full max-h-[80vh] overflow-hidden">
+                <div class="flex items-center justify-between p-4 border-b border-default">
+                    <h3 class="font-serif text-lg font-semibold text-foreground">Choisir une image</h3>
+                    <button type="button"
+                            data-action="click->media-picker#close"
+                            class="p-2 text-muted hover:text-foreground rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="p-4 overflow-y-auto max-h-[60vh]">
+                    <div data-media-picker-target="grid"
+                         class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                        <!-- Les images seront chargées dynamiquement -->
+                        <div class="col-span-full text-center py-8 text-muted">
+                            <div class="animate-pulse">Chargement...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 border-t border-default bg-muted/5">
+                    <a href="/admin/media"
+                       class="text-sm text-primary hover:underline"
+                       target="_blank">
+                        + Ajouter de nouvelles images
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation de suppression -->
+    <div data-media-picker-target="confirmModal"
+         class="hidden fixed inset-0 z-50">
+        <!-- Backdrop with blur -->
+        <div class="fixed inset-0 bg-black/40 backdrop-blur-sm" data-action="click->media-picker#cancelRemove"></div>
+
+        <!-- Modal Container -->
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <div class="bg-card rounded-2xl shadow-xl max-w-md w-full p-8 relative border border-default animate-scale-in">
+                <!-- Decorative accent -->
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-cta rounded-t-2xl"></div>
+
+                <!-- Icon -->
+                <div class="w-14 h-14 rounded-full bg-terracotta-10 flex items-center justify-center mx-auto mb-5">
+                    <svg class="w-7 h-7 text-craft-terracotta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                </div>
+
+                <!-- Title -->
+                <h3 class="text-xl font-semibold text-foreground text-center mb-3 font-serif">
+                    Retirer l'image ?
+                </h3>
+
+                <!-- Message -->
+                <p class="text-muted text-center mb-8 leading-relaxed">
+                    L'image restera dans la médiathèque mais ne sera plus associée à ce paramètre.
+                </p>
+
+                <!-- Buttons -->
+                <div class="flex gap-4">
+                    <button type="button"
+                            data-action="click->media-picker#cancelRemove"
+                            class="btn-outline flex-1">
+                        Annuler
+                    </button>
+                    <button type="button"
+                            data-action="click->media-picker#confirmRemove"
+                            class="flex-1 px-4 py-2.5 rounded-xl bg-craft-terracotta text-white font-semibold hover:opacity-90 transition-all shadow-md hover:shadow-lg">
+                        Retirer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

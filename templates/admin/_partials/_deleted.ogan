@@ -1,0 +1,7 @@
+{# Partial partagé - Réponse vide pour suppression HTMX #}
+
+{% if showFlashOob %}
+<div id="flash-container" hx-swap-oob="innerHTML">
+    {{ component('flashes') }}
+</div>
+{% endif %}

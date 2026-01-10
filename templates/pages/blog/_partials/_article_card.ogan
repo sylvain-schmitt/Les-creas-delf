@@ -1,0 +1,55 @@
+{# Card article pour la liste du blog public #}
+
+<article class="craft-card overflow-hidden group" data-controller="scroll-reveal" data-scroll-reveal-delay="100">
+    {# Image #}
+    <a href="{{ path('blog_show', ['slug' => article.getSlug()]) }}" class="block aspect-[16/10] bg-secondary relative overflow-hidden">
+        {% if article.getFeaturedImage() %}
+        <img
+            src="{{ article.getFeaturedImage().getUrl('medium') }}"
+            alt="{{ article.getTitle() }}"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        >
+        {% else %}
+        <div class="absolute inset-0 flex items-center justify-center text-muted">
+            <svg class="w-16 h-16 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+        </div>
+        {% endif %}
+        <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors"></div>
+    </a>
+
+    {# Content #}
+    <div class="p-5">
+        {# Meta #}
+        <div class="flex items-center gap-2 mb-3">
+            {% if article.getCategory() %}
+            <span class="text-xs font-medium text-primary uppercase tracking-wider">
+                {{ article.getCategory().getName() }}
+            </span>
+            <span class="text-xs text-muted">•</span>
+            {% endif %}
+            <span class="text-xs text-muted">{{ article.getFormattedPublishedAt() }}</span>
+        </div>
+
+        {# Title #}
+        <h3 class="font-serif text-lg font-semibold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+            <a href="{{ path('blog_show', ['slug' => article.getSlug()]) }}">
+                {{ article.getTitle() }}
+            </a>
+        </h3>
+
+        {# Excerpt #}
+        <p class="text-sm text-muted mb-4 line-clamp-3">
+            {{ article.getExcerpt() }}
+        </p>
+
+        {# Read more #}
+        <a href="{{ path('blog_show', ['slug' => article.getSlug()]) }}" class="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary-dark transition-colors">
+            Lire la suite
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+</article>

@@ -19,8 +19,8 @@
 				</div>
 			</a>
 
-			<!-- Navigation Desktop (caché sur mobile) -->
-			<nav class="hidden sm:flex items-center gap-8" data-controller="nav-active">
+			<!-- Navigation Desktop (caché sur tablette et mobile) -->
+			<nav class="hidden lg:flex items-center gap-6" data-controller="nav-active">
 				<a href="{{ path('index') }}" data-nav-path="/" class="nav-link text-sm font-medium text-muted transition-colors hover:text-primary relative">
 					Accueil
 				</a>
@@ -34,6 +34,48 @@
 					Contact
 				</a>
 
+				<!-- Search Bar Container -->
+				<div class="relative flex items-center" data-controller="search-bar">
+					<!-- 1. Opener Button (Visible par défaut) -->
+					<button type="button"
+						class="w-10 h-10 flex items-center justify-center rounded-xl bg-secondary text-muted hover:text-primary hover:bg-primary-10 transition-colors z-10"
+						data-search-bar-target="opener"
+						data-action="click->search-bar#open"
+						aria-label="Ouvrir la recherche">
+						<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<circle cx="11" cy="11" r="8"/>
+							<line x1="21" y1="21" x2="16.65" y2="16.65"/>
+						</svg>
+					</button>
+
+					<!-- 2. Search Form (Caché par défaut) -->
+					<form action="{{ path('search') }}"
+						  method="GET"
+						  class="hidden absolute right-0 top-1/2 -translate-y-1/2 items-center flex-row-reverse gap-2 bg-card p-1 rounded-xl shadow-lg border border-default origin-right transition-all duration-200"
+						  data-search-bar-target="form">
+
+						<!-- Submit Button -->
+						<button type="submit"
+							class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white hover:bg-primary-light transition-colors"
+							aria-label="Lancer la recherche">
+							<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<circle cx="11" cy="11" r="8"/>
+								<line x1="21" y1="21" x2="16.65" y2="16.65"/>
+							</svg>
+						</button>
+
+						<!-- Input -->
+						<input
+							type="text"
+							name="q"
+							placeholder="Rechercher..."
+							class="w-48 sm:w-64 py-1.5 pl-3 pr-2 bg-transparent border-none text-foreground text-sm focus:ring-0 placeholder:text-muted"
+							data-search-bar-target="input"
+							data-action="keydown->search-bar#onKeydown"
+						>
+					</form>
+				</div>
+
 				<!-- Dark Mode Toggle -->
 				<button type="button"
 						data-controller="theme"
@@ -45,8 +87,8 @@
 				</button>
 			</nav>
 
-			<!-- Burger Menu Button (visible sur mobile) -->
-			<div class="flex items-center gap-2 sm:hidden">
+			<!-- Burger Menu Button (visible sur tablette et mobile) -->
+			<div class="flex items-center gap-2 lg:hidden">
 				<!-- Dark Mode Toggle Mobile -->
 				<button type="button"
 						data-controller="theme"
@@ -76,14 +118,14 @@
 
 <!-- Mobile Menu Overlay -->
 <div id="sidebar-overlay"
-     class="hidden fixed inset-0 bg-black/50 z-40 sm:hidden"
+     class="hidden fixed inset-0 bg-black/50 z-40 lg:hidden"
      data-controller="sidebar"
      data-action="click->sidebar#close">
 </div>
 
 <!-- Mobile Menu Panel -->
 <aside id="sidebar"
-       class="fixed top-0 left-0 z-50 w-64 h-full bg-card border-r border-default transform -translate-x-full transition-transform duration-300 ease-out sm:hidden">
+       class="fixed top-0 left-0 z-50 w-72 h-full bg-card border-r border-default transform -translate-x-full transition-transform duration-300 ease-out lg:hidden">
 	<div class="p-4">
 		<!-- Header avec bouton fermer -->
 		<div class="flex items-center justify-between mb-6">
@@ -132,6 +174,22 @@
 			   class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-muted transition-colors hover:bg-secondary">
 				Contact
 			</a>
+
+			<!-- Mobile Search -->
+			<div class="mt-4 pt-4 border-t border-default">
+				<form action="{{ path('search') }}" method="GET" class="relative">
+					<svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<circle cx="11" cy="11" r="8"/>
+						<line x1="21" y1="21" x2="16.65" y2="16.65"/>
+					</svg>
+					<input
+						type="text"
+						name="q"
+						placeholder="Rechercher..."
+						class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-default bg-card text-foreground text-sm placeholder:text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+					>
+				</form>
+			</div>
 		</nav>
 	</div>
 </aside>

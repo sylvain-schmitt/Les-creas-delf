@@ -33,10 +33,28 @@ class CommentRepository
      */
     public function findByArticle(int $articleId): array
     {
-        return Comment::where('article_id', '=', $articleId)
+        $results = Comment::where('article_id', '=', $articleId)
             ->where('status', '=', CommentStatus::APPROVED->value)
             ->orderBy('created_at', 'DESC')
             ->get();
+
+        // Hydratation manuelle car l'ORM semble retourner des arrays par défaut
+        if (!empty($results) && is_array($results[0])) {
+            return array_map(fn($row) => new Comment($row), $results);
+        }
+
+        return $results;
+    }
+
+    /**
+     * Trouver les commentaires approuvés d'un article (paginés)
+     */
+    public function findApprovedPaginated(int $articleId, int $perPage = 5, int $page = 1)
+    {
+        return Comment::where('article_id', '=', $articleId)
+            ->where('status', '=', CommentStatus::APPROVED->value)
+            ->orderBy('created_at', 'DESC')
+            ->paginate($perPage, $page);
     }
 
     /**

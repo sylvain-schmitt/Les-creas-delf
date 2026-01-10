@@ -12,8 +12,16 @@ class Category extends Model
     protected static ?string $table = 'categories';
     protected static ?string $primaryKey = 'id';
 
-    // Source field for slug generation
-    protected string $slugSource = 'name';
+    // Source field for slug generation (constant to avoid DB persistence)
+    protected const SLUG_SOURCE = 'name';
+
+    /**
+     * Get the slug source field (for HasSlug trait)
+     */
+    protected function getSlugSource(): string
+    {
+        return self::SLUG_SOURCE;
+    }
 
     private ?int $id = null;
     private ?string $name = null;
@@ -21,6 +29,29 @@ class Category extends Model
     private ?string $description = null;
     private ?string $createdAt = null;
     private ?string $updatedAt = null;
+
+    // ─────────────────────────────────────────────────────────────
+    // ATTRIBUTE ACCESS (required by HasSlug trait)
+    // ─────────────────────────────────────────────────────────────
+
+    public function getAttribute(string $key): mixed
+    {
+        $getter = 'get' . ucfirst($key);
+        if (method_exists($this, $getter)) {
+            return $this->$getter();
+        }
+        return $this->$key ?? null;
+    }
+
+    public function setAttribute(string $key, mixed $value): static
+    {
+        $setter = 'set' . ucfirst($key);
+        if (method_exists($this, $setter)) {
+            return $this->$setter($value);
+        }
+        $this->$key = $value;
+        return $this;
+    }
 
     // ─────────────────────────────────────────────────────────────
     // GETTERS
@@ -122,5 +153,14 @@ class Category extends Model
     public function articlesCount(): int
     {
         return Article::where('category_id', '=', $this->id)->count();
+    }
+
+    /**
+     * Find by slug (override to fix return type)
+     */
+    public static function findBySlug(string $slug): ?static
+    {
+        $result = static::where('slug', '=', $slug)->first();
+        return $result instanceof static ? $result : null;
     }
 }

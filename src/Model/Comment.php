@@ -63,9 +63,12 @@ class Comment extends Model
         return CommentStatus::from($this->status);
     }
 
-    public function getCreatedAt(): ?string
+    public function getCreatedAt(): ?\DateTime
     {
-        return $this->createdAt;
+        if ($this->createdAt === null) {
+            return null;
+        }
+        return new \DateTime($this->createdAt);
     }
 
     /**
@@ -168,6 +171,37 @@ class Comment extends Model
             return null;
         }
         return Article::find($this->articleId);
+    }
+
+    /**
+     * Get formatted created date in French
+     */
+    public function getFormattedCreatedAt(string $format = 'd/m/Y'): ?string
+    {
+        $date = $this->getCreatedAt();
+
+        if (!$date) {
+            return null;
+        }
+
+        // Mois en français
+        $months = [
+            'January' => 'janvier',
+            'February' => 'février',
+            'March' => 'mars',
+            'April' => 'avril',
+            'May' => 'mai',
+            'June' => 'juin',
+            'July' => 'juillet',
+            'August' => 'août',
+            'September' => 'septembre',
+            'October' => 'octobre',
+            'November' => 'novembre',
+            'December' => 'décembre'
+        ];
+
+        $formatted = $date->format($format);
+        return str_replace(array_keys($months), array_values($months), $formatted);
     }
 
     /**

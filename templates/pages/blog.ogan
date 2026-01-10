@@ -21,190 +21,30 @@
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
                 </svg>
-                <span>Fait main avec amour</span>
+                <span>Inspirations créatives</span>
             </div>
 
             <h1 class="font-handwriting text-5xl sm:text-6xl font-semibold text-foreground mb-4">
-                Mes Créations
+                {{ setting('blog_title', 'Le Blog') }}
             </h1>
             <p class="font-serif text-xl text-muted italic">
-                Chaque pièce est unique, réalisée avec passion et attention aux détails
+                {{ setting('blog_subtitle', 'Mes articles et inspirations créatives') }}
             </p>
         </div>
     </div>
 </section>
 
-<!-- Categories Section -->
-<section class="py-16 bg-secondary">
-    <div class="blog-container">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12" data-controller="scroll-reveal">
-            <button class="filter-btn active px-6 py-3 rounded-xl bg-primary text-white font-medium transition-all hover:shadow-lg">
-                Tout voir
-            </button>
-            <button class="filter-btn px-6 py-3 rounded-xl bg-card border border-default text-foreground font-medium transition-all hover:border-primary hover:text-primary">
-                Bougies
-            </button>
-            <button class="filter-btn px-6 py-3 rounded-xl bg-card border border-default text-foreground font-medium transition-all hover:border-primary hover:text-primary">
-                Bijoux
-            </button>
-            <button class="filter-btn px-6 py-3 rounded-xl bg-card border border-default text-foreground font-medium transition-all hover:border-primary hover:text-primary">
-                Poterie
-            </button>
-        </div>
-    </div>
-</section>
-
-<!-- Creations Grid -->
-<section class="py-16">
-    <div class="blog-container">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-
-            <!-- Creation Card 1 -->
-            <div class="craft-card overflow-hidden group" data-controller="scroll-reveal" data-scroll-reveal-delay="100">
-                <div class="aspect-square bg-secondary relative overflow-hidden">
-                    <div class="absolute inset-0 flex items-center justify-center text-muted">
-                        <svg class="w-16 h-16 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                    </div>
-                    <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors"></div>
-                </div>
-                <div class="p-5">
-                    <span class="text-xs font-medium text-primary uppercase tracking-wider">Bougie</span>
-                    <h3 class="font-serif text-lg font-semibold text-foreground mt-1 mb-2">Bougie Parfumée Lavande</h3>
-                    <p class="text-sm text-muted mb-4">Bougie artisanale 100% cire de soja, parfum naturel de lavande de Provence.</p>
-                    <div class="flex items-center justify-between">
-                        <span class="font-handwriting text-xl text-primary">25€</span>
-                        <button class="btn-outline text-sm px-4 py-2">Voir détails</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Creation Card 2 -->
-            <div class="craft-card overflow-hidden group" data-controller="scroll-reveal" data-scroll-reveal-delay="200">
-                <div class="aspect-square bg-secondary relative overflow-hidden">
-                    <div class="absolute inset-0 flex items-center justify-center text-muted">
-                        <svg class="w-16 h-16 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                    </div>
-                    <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors"></div>
-                </div>
-                <div class="p-5">
-                    <span class="text-xs font-medium text-accent uppercase tracking-wider">Bijou</span>
-                    <h3 class="font-serif text-lg font-semibold text-foreground mt-1 mb-2">Bracelet Perles Naturelles</h3>
-                    <p class="text-sm text-muted mb-4">Bracelet fait main avec des perles de pierre naturelle et fermoir argent 925.</p>
-                    <div class="flex items-center justify-between">
-                        <span class="font-handwriting text-xl text-primary">35€</span>
-                        <button class="btn-outline text-sm px-4 py-2">Voir détails</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Creation Card 3 -->
-            <div class="craft-card overflow-hidden group" data-controller="scroll-reveal" data-scroll-reveal-delay="300">
-                <div class="aspect-square bg-secondary relative overflow-hidden">
-                    <div class="absolute inset-0 flex items-center justify-center text-muted">
-                        <svg class="w-16 h-16 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                    </div>
-                    <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors"></div>
-                </div>
-                <div class="p-5">
-                    <span class="text-xs font-medium text-craft-terracotta uppercase tracking-wider">Poterie</span>
-                    <h3 class="font-serif text-lg font-semibold text-foreground mt-1 mb-2">Vase Artisanal Terre Cuite</h3>
-                    <p class="text-sm text-muted mb-4">Vase fait main en terre cuite, émaillé et cuit au four traditionnel.</p>
-                    <div class="flex items-center justify-between">
-                        <span class="font-handwriting text-xl text-primary">45€</span>
-                        <button class="btn-outline text-sm px-4 py-2">Voir détails</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Creation Card 4 -->
-            <div class="craft-card overflow-hidden group" data-controller="scroll-reveal" data-scroll-reveal-delay="100">
-                <div class="aspect-square bg-secondary relative overflow-hidden">
-                    <div class="absolute inset-0 flex items-center justify-center text-muted">
-                        <svg class="w-16 h-16 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                    </div>
-                    <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors"></div>
-                </div>
-                <div class="p-5">
-                    <span class="text-xs font-medium text-primary uppercase tracking-wider">Bougie</span>
-                    <h3 class="font-serif text-lg font-semibold text-foreground mt-1 mb-2">Set de 3 Bougies Végétales</h3>
-                    <p class="text-sm text-muted mb-4">Trio de bougies aux senteurs florales : rose, jasmin et fleur d'oranger.</p>
-                    <div class="flex items-center justify-between">
-                        <span class="font-handwriting text-xl text-primary">55€</span>
-                        <button class="btn-outline text-sm px-4 py-2">Voir détails</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Creation Card 5 -->
-            <div class="craft-card overflow-hidden group" data-controller="scroll-reveal" data-scroll-reveal-delay="200">
-                <div class="aspect-square bg-secondary relative overflow-hidden">
-                    <div class="absolute inset-0 flex items-center justify-center text-muted">
-                        <svg class="w-16 h-16 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                    </div>
-                    <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors"></div>
-                </div>
-                <div class="p-5">
-                    <span class="text-xs font-medium text-accent uppercase tracking-wider">Bijou</span>
-                    <h3 class="font-serif text-lg font-semibold text-foreground mt-1 mb-2">Collier Bohème Chic</h3>
-                    <p class="text-sm text-muted mb-4">Collier bohème avec pendentif en pierre de lune et chaîne dorée.</p>
-                    <div class="flex items-center justify-between">
-                        <span class="font-handwriting text-xl text-primary">42€</span>
-                        <button class="btn-outline text-sm px-4 py-2">Voir détails</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Creation Card 6 -->
-            <div class="craft-card overflow-hidden group" data-controller="scroll-reveal" data-scroll-reveal-delay="300">
-                <div class="aspect-square bg-secondary relative overflow-hidden">
-                    <div class="absolute inset-0 flex items-center justify-center text-muted">
-                        <svg class="w-16 h-16 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                    </div>
-                    <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors"></div>
-                </div>
-                <div class="p-5">
-                    <span class="text-xs font-medium text-craft-terracotta uppercase tracking-wider">Macramé</span>
-                    <h3 class="font-serif text-lg font-semibold text-foreground mt-1 mb-2">Suspension Macramé</h3>
-                    <p class="text-sm text-muted mb-4">Suspension murale en macramé, coton naturel, style bohème scandinave.</p>
-                    <div class="flex items-center justify-between">
-                        <span class="font-handwriting text-xl text-primary">38€</span>
-                        <button class="btn-outline text-sm px-4 py-2">Voir détails</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Load More -->
-        <div class="text-center mt-12" data-controller="scroll-reveal">
-            <button class="btn-outline px-8 py-3 inline-flex items-center gap-2">
-                <span>Voir plus de créations</span>
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                </svg>
-            </button>
-        </div>
-    </div>
+<!-- Blog Content (Filtres + Articles) -->
+<section id="blog-content">
+    {{ component('pages/blog/_partials/_content', ['articles' => articles, 'categories' => categories, 'currentCategory' => currentCategory]) }}
 </section>
 
 <!-- CTA Section -->
 <section class="py-16 bg-gradient-cta text-white">
     <div class="blog-container text-center" data-controller="scroll-reveal">
-        <h2 class="font-handwriting text-4xl sm:text-5xl font-semibold mb-4">Une création sur mesure ?</h2>
+        <h2 class="font-handwriting text-4xl sm:text-5xl font-semibold mb-4">Une question ?</h2>
         <p class="text-lg text-white/80 mb-8 max-w-xl mx-auto">
-            Vous avez une idée en tête ? Je réalise des créations personnalisées selon vos envies.
+            N'hésitez pas à me contacter pour échanger sur mes créations ou pour toute autre question.
         </p>
         <a href="{{ path('contact') }}" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary font-semibold rounded-xl hover:bg-white/90 transition-all shadow-lg">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

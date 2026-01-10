@@ -41,9 +41,24 @@
             </div>
         </div>
 
+        <!-- Tags -->
+        <div>
+            {{ form.tags }}
+        </div>
+
         <!-- Contenu WYSIWYG -->
         <div>
             {{ form.content }}
+        </div>
+
+        <!-- Image mise en avant -->
+        <div>
+            {% include 'admin/media/_picker_field.ogan' with {
+                name: 'featured_image_id',
+                value: article.featured_image_id ?? '',
+                currentImage: article ? article.getFeaturedImage() : null,
+                label: 'Image mise en avant'
+            } %}
         </div>
 
         <!-- Actions -->

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouveau message de contact</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.7;
+            color: #4a4a4a;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #faf7f5;
+        }
+        .container {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        .header {
+            background: linear-gradient(135deg, #C07459 0%, #e8a090 50%, #7A9A8B 100%);
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            color: white;
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            font-family: 'Georgia', serif;
+        }
+        .header .logo {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 32px;
+            color: white;
+            margin-bottom: 5px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #C07459;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 25px;
+        }
+        .info-row {
+            margin-bottom: 10px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #C07459;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .message-box {
+            background: white;
+            border: 1px solid #eee;
+            padding: 20px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            color: #333;
+        }
+        .footer {
+            text-align: center;
+            padding: 25px 30px;
+            color: #888;
+            font-size: 13px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">✨ {{ appName }}</div>
+            <h1>Nouveau Message</h1>
+        </div>
+        <div class="content">
+            <p>Bonjour,</p>
+            <p>Vous avez reçu un nouveau message via le formulaire de contact du site.</p>
+
+            <div class="info-box">
+                <div class="info-row">
+                    <div class="info-label">De</div>
+                    <div>{{ name }} (<a href="mailto:{{ email }}" style="color: #C07459;">{{ email }}</a>)</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Sujet</div>
+                    <div>{{ subject }}</div>
+                </div>
+            </div>
+
+            <div class="info-label" style="margin-bottom: 10px;">Message :</div>
+            <div class="message-box">{{ message }}</div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="mailto:{{ email }}?subject=Re: {{ subject }}" style="display: inline-block; background: #C07459; color: white; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold;">Répondre</a>
+            </div>
+        </div>
+        <div class="footer">
+            <p>Ce message a été envoyé depuis le formulaire de contact de {{ appName }}.</p>
+        </div>
+    </div>
+</body>
+</html>
