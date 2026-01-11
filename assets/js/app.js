@@ -27,6 +27,7 @@ import MediaPickerController from './controllers/media_picker_controller.js';
 import ClipboardController from './controllers/clipboard_controller.js';
 import ModalController from './controllers/modal_controller.js';
 import SearchBarController from './controllers/search-bar_controller.js';
+import DropdownController from './controllers/dropdown_controller.js';
 
 // ─────────────────────────────────────────────────────────────────────────
 // Initialisation de l'application
@@ -44,6 +45,7 @@ app.register('media-picker', MediaPickerController);
 app.register('clipboard', ClipboardController);
 app.register('modal', ModalController);
 app.register('search-bar', SearchBarController);
+app.register('dropdown', DropdownController);
 
 // ─────────────────────────────────────────────────────────────────────────
 // Export pour utilisation avancée

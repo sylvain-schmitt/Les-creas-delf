@@ -18,19 +18,25 @@
             <svg data-theme-target="lightIcon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
         </button>
 
-        <!-- User Dropdown -->
-        <div class="relative ml-3 group">
-            <button type="button" class="peer flex items-center max-w-xs text-sm bg-card rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 px-2 py-1.5 transition-all hover:bg-secondary" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+        <!-- User Dropdown (OganStimulus: dropdown controller) -->
+        <div class="relative ml-3" data-controller="dropdown">
+            <button type="button"
+                    data-action="click->dropdown#toggle"
+                    class="flex items-center max-w-xs text-sm bg-card rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 px-2 py-1.5 transition-all hover:bg-secondary"
+                    id="user-menu-button"
+                    aria-expanded="false"
+                    aria-haspopup="true">
                 <span class="sr-only">Open user menu</span>
                 <div class="h-8 w-8 rounded-lg bg-primary-10 flex items-center justify-center text-primary font-bold">
                     {{ app.user.name|first|upper }}
                 </div>
                 <span class="ml-3 hidden md:block text-sm font-medium text-foreground">{{ app.user.name }}</span>
-                <svg class="ml-2 h-5 w-5 text-muted group-hover:text-foreground transition-colors" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                <svg class="ml-2 h-5 w-5 text-muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
             </button>
 
-            <!-- Dropdown menu - appears on focus or hover -->
-            <div class="hidden peer-focus:block hover:block focus-within:block absolute right-0 w-56 mt-2 origin-top-right bg-card rounded-xl shadow-xl border border-default py-2 z-50">
+            <!-- Dropdown menu -->
+            <div data-dropdown-target="menu"
+                 class="hidden absolute right-0 w-56 mt-2 origin-top-right bg-card rounded-xl shadow-xl border border-default py-2 z-50">
                 <div class="px-4 py-3 border-b border-default">
                     <p class="text-sm font-medium text-foreground">Connecté en tant que</p>
                     <p class="text-sm text-muted truncate">{{ app.user.email }}</p>
