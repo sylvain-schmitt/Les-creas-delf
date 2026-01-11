@@ -1,5 +1,5 @@
 {{ title = title ?? 'Les Créas D\'elf' }}
-{{ default_og_image = '/assets/images/og-image.png' }}
+{{ default_og_image = '/og-image.png' }}
 <!DOCTYPE html>
 <html lang="fr" class="h-full">
 
@@ -36,7 +36,7 @@
 			"description": "Blog créatif : inspirations artisanales, tutoriels et créations faites main.",
 			"url": "https://les-creas-delf.fr",
 			"logo": "{{ asset('/favicon.svg') }}",
-			"image": "{{ asset('/assets/images/og-image.png') }}",
+			"image": "{{ asset('/og-image.png') }}",
 			"author": {
 				"@type": "Person",
 				"name": "Delphine"
