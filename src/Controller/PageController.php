@@ -161,7 +161,7 @@ class PageController extends AbstractController
 
             try {
                 // Config mailer
-                $dsn = Config::get('mailer.dsn') ?? Config::get('mail.dsn', 'smtp://localhost:1025');
+                $dsn = Config::get('mail.dsn') ?? Config::get('mailer.dsn', 'smtp://localhost:1025');
                 $mailer = new Mailer($dsn);
 
                 // Render email template
