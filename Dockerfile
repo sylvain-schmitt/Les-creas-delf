@@ -18,6 +18,12 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_pgsql intl zip opcache gd \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# PHP upload limits
+RUN echo "upload_max_filesize=5M" > /usr/local/etc/php/conf.d/uploads.ini \
+ && echo "post_max_size=8M" >> /usr/local/etc/php/conf.d/uploads.ini \
+ && echo "max_file_uploads=20" >> /usr/local/etc/php/conf.d/uploads.ini
+
+
 # Après l'installation des extensions, ajoutez :
 RUN php -m | grep -E "pdo|pgsql" && php -r "var_dump(PDO::getAvailableDrivers());"
 
